@@ -7,13 +7,15 @@ all: git tmux zsh vim
 
 .PHONY: uninstall
 clean:
-	$(RM) $(HOME)/.gitconfig
-	$(RM) $(HOME)/.tmux.conf
-	$(RM) $(HOME)/.zshrc $(addprefix $(HOME)/,$(shell find .oh-my-zsh -type f))
-	$(RM) $(HOME)/.vimrc $(addprefix $(HOME)/,$(shell find .vim -type f))
+	$(RM) $(GIT) $(TMUX) $(ZSH) $(VIM)
+
+GIT=$(HOME)/.gitconfig $(HOME)/.gitignore
+TMUX=$(HOME)/.tmux.conf
+ZSH=$(HOME)/.zshrc $(addprefix $(HOME)/,$(shell find .oh-my-zsh -type f))
+VIM=$(HOME)/.vimrc $(addprefix $(HOME)/,$(shell find .vim -type f))
 
 .PHONY: git tmux zsh vim
-git: $(HOME)/.gitconfig
-tmux: $(HOME)/.tmux.conf
-zsh: $(HOME)/.zshrc $(addprefix $(HOME)/,$(shell find .oh-my-zsh -type f))
-vim: $(HOME)/.vimrc $(addprefix $(HOME)/,$(shell find .vim -type f))
+git: $(GIT)
+tmux: $(TMUX)
+zsh: $(ZSH)
+vim: $(VIM)
