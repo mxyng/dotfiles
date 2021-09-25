@@ -130,9 +130,30 @@ helm() {
 }
 EOF
 
+status() { echo >&2 ">>> $*"; }
+error() { status "ERROR: $*"; }
+
+chk8s() {
+    local KUBECONFIG="$HOME/.kube/$1.yaml"
+    if [ $# -ne 1 ] && [ $# -ne 2 ]; then
+        echo 'usage: switch kubeconfig [context]'
+        return
+    fi
+
+    [ ! -f "$KUBECONFIG" ] && error "$1.yaml not found in ~/.kube/" && return
+    ln -sf $HOME/.kube/$1.yaml $HOME/.kube/config
+
+    echo -n "Switched to configuration \"$1\""
+    if [ $# -eq 2 ]; then
+        kubectl config use-context $2 >/dev/null
+        echo -n ": context \"$2\""
+    fi
+    echo '.'
+}
+
 dd() {
     if [ $# -eq 0 ]; then
-        kubectl config use-context docker-desktop
+        chk8s dd docker-desktop
     else
         kubectl --kubeconfig ~/.kube/dd.yaml --context docker-desktop $*
     fi
