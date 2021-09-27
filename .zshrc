@@ -134,7 +134,7 @@ status() { echo >&2 ">>> $*"; }
 error() { status "ERROR: $*"; }
 
 chk8s() {
-     usage() { echo 'usage: chk8s  KUBECONFIG [-c CONTEXT] [-n NAMESPACE]'; }
+     usage() { echo 'usage: chk8s KUBECONFIG [-c CONTEXT] [-n NAMESPACE]'; }
 
     [ -z "$1" ] && usage && return
 
@@ -149,7 +149,7 @@ chk8s() {
         esac
     done
 
-    KUBECONFIG="$KUBEDIR/$1.yaml"
+    local KUBECONFIG="$KUBEDIR/$1.yaml"
     [ ! -f "$KUBECONFIG" ] && error "$1.yaml not found in $KUBEDIR" && return
     ln -sf $HOME/.kube/$1.yaml $HOME/.kube/config
 
@@ -169,7 +169,7 @@ chk8s() {
 
 dd() {
     if [ $# -eq 0 ]; then
-        chk8s dd docker-desktop
+        chk8s dd -c docker-desktop
     else
         kubectl --kubeconfig ~/.kube/dd.yaml --context docker-desktop $*
     fi
