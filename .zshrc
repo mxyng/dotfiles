@@ -108,6 +108,7 @@ alias ls='ls -G'
 alias grep='grep --color=auto'
 alias goto='z git'
 
+alias k='kubectl'
 alias anchor='docker run --rm -it -v $PWD:/mnt --workdir /mnt'
 
 :<<EOF
