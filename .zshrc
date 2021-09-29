@@ -119,12 +119,12 @@ chk8s() {
         MSG="$MSG (namespace \"$NAMESPACE\")"
     fi
 
-    echo "$MSG."
+    status "$MSG."
 }
 
 chaws() {
     export AWS_DEFAULT_PROFILE="$1"
-    echo "Switched to profile \"$1\"."
+    status "Switched to profile \"$1\"."
 }
 
 dd() {
@@ -145,7 +145,6 @@ export LESS_TERMCAP_ue=$'\033[00m'
 
 export MANWIDTH=80
 
-# export FZF_DEFAULT_COMMAND='ag --hidden --ignore-dir=".git" -p ".gitignore" -p "~/.gitignore" -g ""'
 export FZF_DEFAULT_COMMAND="rg --files --hidden --no-ignore --smart-case"
 
 [ -z "$TMUX" ] && [ "$(id -u)" -ne 0 ] && { tmux attach || exec tmux && exit; }
