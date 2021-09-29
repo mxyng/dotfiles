@@ -85,26 +85,6 @@ alias goto='z git'
 alias k='kubectl'
 alias anchor='docker run --rm -it -v $PWD:/mnt --workdir /mnt'
 
-:<<EOF
-helm() {
-    local OPTIND
-    local HELM_RUN='docker run'
-    local HELM_ARGS="--rm -v $HOME/.kube:/root/.kube -v $HOME/.helm:/root/.helm -v $PWD:/mnt --workdir /mnt"
-    local HELM_DEBUG=0
-    local HELM_VERSION='3.6.3'
-    while getopts "di" OPTION; do
-        case $OPTION in
-            d) HELM_DEBUG=1 ;;
-            i) HELM_ARGS="$HELM_ARGS -it --entrypoint sh" ;;
-        esac
-    done
-
-    shift $(( $OPTIND - 1 ))
-    [ "$HELM_DEBUG" -eq 1 ] && echo $HELM_RUN $HELM_ARGS alpine/helm:$HELM_VERSION $@
-    eval $HELM_RUN $HELM_ARGS alpine/helm:$HELM_VERSION $@
-}
-EOF
-
 status() { echo >&2 ">>> $*"; }
 error() { status "ERROR: $*"; }
 
