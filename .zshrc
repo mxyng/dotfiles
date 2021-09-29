@@ -157,7 +157,7 @@ chk8s() {
     MSG="Switched to configuration \"$1\""
     if [ -n "$CONTEXT" ]; then
         kubectl config use-context $CONTEXT >/dev/null
-        MSG="$MSG : context \"$CONTEXT\""
+        MSG="$MSG: context \"$CONTEXT\""
     fi
 
     if [ -n "$NAMESPACE" ]; then
@@ -166,6 +166,11 @@ chk8s() {
     fi
 
     echo "$MSG."
+}
+
+chaws() {
+    export AWS_DEFAULT_PROFILE="$1"
+    echo "Switched to profile \"$1\"."
 }
 
 dd() {
