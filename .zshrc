@@ -89,23 +89,37 @@ status() { echo >&2 ">>> $*"; }
 error() { status "ERROR: $*"; }
 
 chk8s() {
-     usage() { echo 'usage: chk8s KUBECONFIG [-c CONTEXT] [-n NAMESPACE]'; }
+    usage() { echo 'usage: chk8s [-l] [KUBECONFIG] [-c CONTEXT] [-n NAMESPACE]'; }
 
-    [ -z "$1" ] && usage && return
-
-    local OPTIND=2 OPTION OPTARG
     local CONTEXT NAMESPACE
     local KUBEDIR="$HOME/.kube"
-    while getopts "c:n:" OPTION; do
+
+    if [ $# -eq 0 ]; then
+        local CURRENT="$(basename $(readlink $KUBEDIR/config))"
+        CONTEXT="$(kubectl config current-context)"
+        NAMESPACE="$(kubectl config view -o jsonpath={..namespace})"
+        status "Current configuration \"${CURRENT%%.*}\": context \"$CONTEXT\" (namespace \"$NAMESPACE\")."
+        return
+    fi
+
+    local OPTIND=2 OPTION OPTARG
+    local KUBECONFIG="$KUBEDIR/$1.yaml"
+    if [ ! -f "$KUBECONFIG" ]; then
+        OPTIND=1
+        KUBECONFIG="$KUBEDIR/config"
+    fi
+
+    while getopts "c:ln:" OPTION; do
         case $OPTION in
             c) CONTEXT=$OPTARG ;;
+            l) kubectl --kubeconfig $KUBECONFIG config get-contexts; return ;;
             n) NAMESPACE=$OPTARG ;;
             *) usage; return ;;
         esac
     done
 
-    local KUBECONFIG="$KUBEDIR/$1.yaml"
-    [ ! -f "$KUBECONFIG" ] && error "$1.yaml not found in $KUBEDIR" && return
+    [ ! -f "$KUBECONFIG" ] && error "$1.yaml not found in $KUBEDIR." && return
+
     ln -sf $HOME/.kube/$1.yaml $HOME/.kube/config
 
     MSG="Switched to configuration \"$1\""
