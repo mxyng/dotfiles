@@ -8,6 +8,7 @@ Plug 'tpope/vim-sensible'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'w0rp/ale'
+Plug 'sheerun/vim-polyglot'
 call plug#end()
 
 set noswapfile
