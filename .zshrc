@@ -161,4 +161,6 @@ export MANWIDTH=80
 
 export FZF_DEFAULT_COMMAND="rg --files --hidden --no-ignore --smart-case"
 
+command -v direnv >/dev/null && eval "$(direnv hook zsh)"
+
 [ -z "$TMUX" ] && [ "$(id -u)" -ne 0 ] && { tmux attach || exec tmux && exit; }

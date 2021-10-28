@@ -1,6 +1,3 @@
-[user]
-	email = michael.yang@infrahq.com
-	name = Michael Yang
 [core]
 	editor = vi
 	excludesfile = ~/.gitignore
@@ -26,3 +23,9 @@
 	rebase = true
 [merge]
 	conflictstyle = diff3
+
+[includeIf "gitdir:~/git/mxyng/"]
+	path = ~/git/mxyng/.gitconfig
+
+[includeIf "gitdir:~/git/infrahq/"]
+	path = ~/git/infrahq/.gitconfig
