@@ -1,31 +1,38 @@
 [core]
-	editor = vi
-	excludesfile = ~/.gitignore
+    editor = vi
+    excludesfile = ~/.gitignore
+
 [alias]
-	st = status -sb
-	ci = commit
-	co = checkout
-	br = branch
-	df = diff
-	dc = diff --cached
-	cp = cherry-pick
-	who = shortlog -s --
-	undo = reset --hard
-	lg = log --oneline -p
-	ll = log --oneline --numstat
-	lsd = log --oneline --graph
-	rbi = rebase -i
-	touch = commit --amend --no-edit
-	ap = add -p
+    st = status -sb
+    ci = commit
+    co = checkout
+    br = branch
+    df = diff
+    dc = diff --cached
+    cp = cherry-pick
+    who = shortlog -s --
+    undo = reset --hard
+    lg = log --oneline -p
+    ll = log --oneline --numstat
+    lsd = log --oneline --graph
+    rbi = rebase -i
+    touch = commit --amend --no-edit
+    ap = add -p
+
 [color]
-	ui = true
+    ui = true
+
 [pull]
-	rebase = true
+    rebase = true
+
 [merge]
-	conflictstyle = diff3
+    conflictstyle = diff3
+
+[pager]
+    branch = false
 
 [includeIf "gitdir:~/git/mxyng/"]
-	path = ~/git/mxyng/.gitconfig
+    path = ~/git/mxyng/.gitconfig
 
 [includeIf "gitdir:~/git/infrahq/"]
-	path = ~/git/infrahq/.gitconfig
+    path = ~/git/infrahq/.gitconfig
