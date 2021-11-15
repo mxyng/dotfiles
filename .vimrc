@@ -5,10 +5,9 @@ Plug '/opt/homebrew/opt/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-sensible'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'w0rp/ale'
 Plug 'sheerun/vim-polyglot'
+Plug 'itchyny/lightline.vim'
 call plug#end()
 
 set noswapfile
@@ -55,9 +54,6 @@ omap <leader><tab> <plug>(fzf-maps-o)
 nmap <leader>f :Rg 
 nmap <leader>F :exec("Rg ".expand("<cword>"))<CR>
 
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_theme = "tomorrow"
-
 set fillchars+=vert:│
 highlight VertSplit cterm=none
 highlight Search cterm=none ctermfg=Red ctermbg=White
@@ -79,5 +75,7 @@ nnoremap <c-w>- :split<CR>
 nnoremap zz :x!<CR>
 nnoremap zx :q!<CR>
 nnoremap zq :cq<CR>
+
+let g:lightline = {'colorscheme': 'Tomorrow_Night'}
 
 syntax enable
