@@ -76,6 +76,14 @@ nnoremap zz :x!<CR>
 nnoremap zx :q!<CR>
 nnoremap zq :cq<CR>
 
-let g:lightline = {'colorscheme': 'Tomorrow_Night'}
+let g:lightline = {
+    \ 'colorscheme': 'Tomorrow_Night',
+    \ 'active': {
+    \   'left': [['mode', 'paste'], ['readonly', 'relativepath', 'modified']],
+    \ },
+    \ 'inactive': {
+    \   'left': [['relativepath']],
+    \ },
+    \ }
 
 syntax enable
