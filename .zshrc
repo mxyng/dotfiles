@@ -30,7 +30,6 @@ ZSH_THEME=myang
 
 # Uncomment the following line to automatically update without prompting.
 # DISABLE_UPDATE_PROMPT="true"
-DISABLE_UPDATE_PROMPT="true"
 
 # Uncomment the following line to change how often to auto-update (in days).
 # export UPDATE_ZSH_DAYS=13
@@ -75,79 +74,20 @@ plugins=(docker fzf kubectl z)
 
 source $ZSH/oh-my-zsh.sh
 
-unsetopt share_history
-
 alias ll='ls -al'
 alias ls='ls -G'
 alias grep='grep --color=auto'
 alias goto='z git'
 
 alias k='kubectl'
+alias x='kubectx'
+alias dd='kubectx docker-desktop'
 alias anchor='docker run --rm -it -v $PWD:/mnt --workdir /mnt'
+
+alias vi='nvim'
 
 status() { echo >&2 ">>> $*"; }
 error() { status "ERROR: $*"; }
-
-chk8s() {
-    usage() { echo 'usage: chk8s [-l] [KUBECONFIG] [-c CONTEXT] [-n NAMESPACE]'; }
-
-    local CONTEXT NAMESPACE
-    local KUBEDIR="$HOME/.kube"
-
-    if [ $# -eq 0 ]; then
-        local CURRENT="$(basename $(readlink $KUBEDIR/config))"
-        CONTEXT="$(kubectl config current-context)"
-        NAMESPACE="$(kubectl config view -o jsonpath={..namespace})"
-        status "Current configuration \"${CURRENT%%.*}\": context \"$CONTEXT\" (namespace \"$NAMESPACE\")."
-        return
-    fi
-
-    local OPTIND=2 OPTION OPTARG
-    local KUBECONFIG="$KUBEDIR/$1.yaml"
-    if [ ! -f "$KUBECONFIG" ]; then
-        OPTIND=1
-        KUBECONFIG="$KUBEDIR/config"
-    fi
-
-    while getopts "c:ln:" OPTION; do
-        case $OPTION in
-            c) CONTEXT=$OPTARG ;;
-            l) kubectl --kubeconfig $KUBECONFIG config get-contexts; return ;;
-            n) NAMESPACE=$OPTARG ;;
-            *) usage; return ;;
-        esac
-    done
-
-    [ ! -f "$KUBECONFIG" ] && error "$1.yaml not found in $KUBEDIR." && return
-
-    ln -sf $HOME/.kube/$1.yaml $HOME/.kube/config
-
-    MSG="Switched to configuration \"$1\""
-    if [ -n "$CONTEXT" ]; then
-        kubectl config use-context $CONTEXT >/dev/null
-        MSG="$MSG: context \"$CONTEXT\""
-    fi
-
-    if [ -n "$NAMESPACE" ]; then
-        kubectl config set-context --current --namespace=$NAMESPACE >/dev/null
-        MSG="$MSG (namespace \"$NAMESPACE\")"
-    fi
-
-    status "$MSG."
-}
-
-chaws() {
-    export AWS_DEFAULT_PROFILE="$1"
-    status "Switched to profile \"$1\"."
-}
-
-dd() {
-    if [ $# -eq 0 ]; then
-        chk8s dd -c docker-desktop
-    else
-        kubectl --kubeconfig ~/.kube/dd.yaml --context docker-desktop $*
-    fi
-}
 
 export LESS_TERMCAP_mb=$'\033[01;31m'
 export LESS_TERMCAP_md=$'\033[01;36m'
@@ -160,6 +100,8 @@ export LESS_TERMCAP_ue=$'\033[00m'
 export MANWIDTH=80
 
 export FZF_DEFAULT_COMMAND="rg --files --hidden --no-ignore --smart-case"
+export FZF_CTRL_T_COMMAND=$FZF_DEFAULT_COMMAND
+export FZF_ALT_C_COMMAND=$FZF_DEFAULT_COMMAND
 
 command -v direnv >/dev/null && eval "$(direnv hook zsh)"
 

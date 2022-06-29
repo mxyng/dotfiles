@@ -1,5 +1,5 @@
 [core]
-    editor = vi
+    editor = nvim
     excludesfile = ~/.gitignore
 
 [alias]
@@ -30,6 +30,9 @@
 
 [pager]
     branch = false
+
+[fetch]
+    prune = true
 
 [includeIf "gitdir:~/git/mxyng/"]
     path = ~/git/mxyng/.gitconfig
