@@ -18,6 +18,7 @@
     rbi = rebase -i
     touch = commit --amend --no-edit
     ap = add -p
+    tmp = commit -pm tmp
 
 [color]
     ui = true

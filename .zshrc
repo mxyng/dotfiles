@@ -1,6 +1,6 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH=$HOME/bin:/opt/homebrew/bin:$PATH
+export PATH="/opt/homebrew/bin:$PATH"
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -70,39 +70,133 @@ ZSH_THEME=myang
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(docker fzf kubectl z)
-
+plugins=(fzf macos zoxide direnv)
 source $ZSH/oh-my-zsh.sh
+
+# use vim key bindings
+bindkey -v
 
 alias ll='ls -al'
 alias ls='ls -G'
 alias grep='grep --color=auto'
-alias goto='z git'
+alias cat='bat'
+alias ekam='make -f Makefile.local'
 
-alias k='kubectl'
-alias x='kubectx'
+alias k='kubectl' x='kubectx' n='kubens'
 alias dd='kubectx docker-desktop'
-alias anchor='docker run --rm -it -v $PWD:/mnt --workdir /mnt'
+alias anchor='docker run --rm -it -v $PWD:/mnt/$(basename $PWD) --workdir /mnt/$(basename $PWD)'
+
+alias tf='terraform'
 
 alias vi='nvim'
 
+touch() { mkdir -p $(dirname $*); /usr/bin/touch $*; }
+
 status() { echo >&2 ">>> $*"; }
 error() { status "ERROR: $*"; }
+tilde() { echo $1 | sed "s#$HOME#~#"; }
 
-export LESS_TERMCAP_mb=$'\033[01;31m'
-export LESS_TERMCAP_md=$'\033[01;36m'
-export LESS_TERMCAP_me=$'\033[00m'
-export LESS_TERMCAP_so=$'\033[01;44;33m'
-export LESS_TERMCAP_se=$'\033[00m'
-export LESS_TERMCAP_us=$'\033[04;31m'
-export LESS_TERMCAP_ue=$'\033[00m'
+deactivate() {
+  if [ -z "$ENVRC" ]; then
+    return
+  fi
+
+  status "unloading $(tilde $ENVRC)"
+
+  local IFS="$IFS="
+  while read LINE; do
+    set -- ${=LINE}
+    unset $2
+    status "unloaded $2"
+  done <$ENVRC
+
+  unset ENVRC ENVRC_NAME
+}
+
+activate() {
+  if [ -n "$ENVRC" ] || [ -n "$ENVRC_NAME" ]; then
+    error '"'$ENVRC_NAME'"' is already active. deactivate it before continuing
+    return
+  fi
+
+  ENVRC_NAME=$1
+  ENVRC="$HOME/Documents/aws/$1/.envrc"
+  if [ ! -f "$ENVRC" ]; then
+    error "unknown profile $1"
+    return
+  fi
+
+  status "loading $(tilde $ENVRC)"
+  source $ENVRC
+
+  local IFS="$IFS="
+  while read LINE; do
+    set -- ${=LINE}
+    status "loaded $2=$3"
+  done <$ENVRC
+
+  export ENVRC ENVRC_NAME
+}
+
+clone() {
+  local GROUP=$(basename $(dirname $1))
+  local NAME=$(basename $1)
+
+  case $1 in
+    git@*) GROUP=${GROUP##*:} ;;
+  esac
+
+  REPO_PATH="$HOME/git/$GROUP/${NAME%.git}"
+
+  if [ -d "$REPO_PATH" ]; then
+    status "$GROUP/$NAME already exists"
+    cd $REPO_PATH
+    return
+  fi
+
+  mkdir -p $(dirname $REPO_PATH)
+  git clone $1 $REPO_PATH
+  cd $REPO_PATH
+}
 
 export MANWIDTH=80
 
-export FZF_DEFAULT_COMMAND="rg --files --hidden --no-ignore --smart-case"
-export FZF_CTRL_T_COMMAND=$FZF_DEFAULT_COMMAND
-export FZF_ALT_C_COMMAND=$FZF_DEFAULT_COMMAND
+export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!**/.git/*" --glob "!**/node_modules/*" --no-ignore --smart-case'
+export FZF_DEFAULT_OPTS="
+  --preview-window right,40%,sharp
+  --cycle
+  --height 50%
+  --border sharp
+  --info inline
+  --color label:bold
+  --tabstop 1
+  --layout reverse
+  --exit-0
+  --select-1
+"
 
-command -v direnv >/dev/null && eval "$(direnv hook zsh)"
+export FZF_CTRL_T_COMMAND=$FZF_DEFAULT_COMMAND
+export FZF_CTRL_T_OPTS="$FZF_DEFAULT_OPTS --preview 'bat -n --color=always {}'"
+
+export FZF_CTRL_R_COMMAND=$FZF_DEFAULT_COMMAND
+export FZF_CTRL_R_OPTS="$FZF_DEFAULT_OPTS --preview 'echo {2..}' --preview-window right,40%,sharp,wrap"
+
+export FZF_ALT_C_COMMAND=$FZF_DEFAULT_COMMAND
+export FZF_ALT_C_OPTS="$FZF_DEFAULT_OPTS --preview 'tree -C {2..}'"
+
+if type brew &>/dev/null; then
+  FPATH="$(brew --prefix)/share/zsh/site-functions:$FPATH"
+  autoload -Uz compinit
+  compinit
+fi
+
+if type zoxide &>/dev/null; then
+  export _ZO_FZF_OPTS="$FZF_DEFAULT_OPTS --preview 'tree -C {2..}' --exact --no-sort"
+  eval $(zoxide init zsh)
+fi
+
+if [ "$(id -u)" -eq 0 ]; then
+  return
+fi
 
 [ -z "$TMUX" ] && [ "$(id -u)" -ne 0 ] && { tmux attach || exec tmux && exit; }

@@ -7,17 +7,18 @@ Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'nvim-treesitter/nvim-treesitter-context'
 Plug 'lewis6991/spellsitter.nvim'
 
+Plug 'neovim/nvim-lspconfig'
+
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 
 Plug 'phaazon/hop.nvim'
+Plug 'windwp/nvim-autopairs'
 
 Plug 'numToStr/Comment.nvim'
-
 Plug 'lukas-reineke/indent-blankline.nvim'
-
 Plug 'nvim-lualine/lualine.nvim'
-Plug "rafamadriz/neon"
+Plug 'arcticicestudio/nord-vim'
 
 vim.call('plug#end')
 
@@ -27,6 +28,7 @@ vim.g.mapleader = ' '
 -- Line numbers
 vim.opt.number = true
 vim.opt.relativenumber = true
+vim.opt.linebreak = true
 
 -- List mode
 vim.opt.list = true
@@ -54,15 +56,25 @@ vim.opt.spelllang = 'en'
 -- Clipboard
 vim.opt.clipboard = 'unnamed'
 
--- Key map
-vim.keymap.set('n', '<Leader>w', ':bdelete<CR>', { noremap = true, silent = true })
-vim.keymap.set('n', '<Leader>z', ':quit<CR>', { noremap = true, silent = true })
-vim.keymap.set('n', '<Leader>q', ':quitall<CR>', { noremap = true, silent = true })
-vim.keymap.set('n', '<Leader>s', ':write<CR>', { noremap = true, silent = true })
+-- Mouse
+vim.opt.mouse = ''
+
+-- Mappings
+local opts = { noremap = true, silent = true }
+-- vim.keymap.set('n', '<Leader>w', ':bdelete<CR>', opts)
+vim.keymap.set('n', '<Leader>w', function() vim.cmd.bdelete() end, opts)
+vim.keymap.set('n', '<Leader>z', function() vim.cmd.quit() end, opts)
+vim.keymap.set('n', '<Leader>q', function() vim.cmd.quitall() end, opts)
+vim.keymap.set('n', '<Leader>s', function() vim.cmd.write() end, opts)
+vim.keymap.set('n', '<Leader>r', function() vim.cmd.edit({ bang = true }) end, opts)
+
+vim.keymap.set('n', 'zl', '<Nop>')
+vim.keymap.set('n', 'zw', '<Nop>')
 
 -- Plugin: nvim-treesitter
 require('nvim-treesitter.configs').setup {
-  ensure_installed = { 'vim', 'bash', 'json', 'yaml', 'go', 'python' },
+  ensure_installed = { 'vim', 'bash', 'json', 'yaml', 'go', 'python', 'dockerfile', 'hcl', 'javascript', 'make',
+    'markdown', 'sql', 'typescript' },
   highlight = {
     enable = true,
   },
@@ -77,73 +89,185 @@ require('spellsitter').setup {
 local Actions = require('telescope.actions')
 require('telescope').setup {
   defaults = {
-    file_ignore_patterns = {
-      '.git/',
-      'node_modules/',
-    },
     mappings = {
       i = {
         ['<Esc>'] = Actions.close
       },
     },
   },
-  pickers = {
-    find_files = {
-      hidden = true,
-      no_ignore = true,
-    },
-    grep_string = {
-      only_sort_text = true,
-      additional_args = function(opts)
-        return { "--hidden" }
-      end
-    },
-  },
 }
 
-vim.keymap.set('n', '<Leader>t', ':lua require("telescope.builtin").builtin()<CR>', { noremap = true, silent = true })
-vim.keymap.set('n', '<Leader>b', ':lua require("telescope.builtin").buffers()<CR>', { noremap = true, silent = true })
-vim.keymap.set('n', '<Leader>p', ':lua require("telescope.builtin").find_files()<CR>', { noremap = true, silent = true })
-vim.keymap.set('n', '<Leader>f', ':lua require("telescope.builtin").grep_string({ search="" })<CR>', { noremap = true, silent = true })
-vim.keymap.set('n', '<Leader>j', ':lua require("telescope.builtin").grep_string()<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<Leader>t', require("telescope.builtin").builtin, opts)
+vim.keymap.set('n', '<Leader>b', require("telescope.builtin").buffers, opts)
+vim.keymap.set('n', '<Leader>p', function()
+  require("telescope.builtin").find_files {
+    find_command = {
+      "rg",
+      "--files",
+      "--hidden",
+      "--glob=!**/.git/*",
+      "--glob=!**/node_modules/*",
+      "--no-ignore",
+      "--smart-case",
+    },
+  }
+end, opts)
+
+vim.keymap.set('n', '<Leader>l', require('telescope.builtin').lsp_document_symbols, opts)
+vim.keymap.set('n', '<Leader>f', require('telescope.builtin').lsp_dynamic_workspace_symbols, opts)
+vim.keymap.set('n', '<Leader>j', function()
+  require('telescope.builtin').lsp_references {
+    include_current_line = true,
+    jump_type = 'never',
+  }
+end, opts)
 
 -- Plugin: hop
 require('hop').setup {
 
 }
 
-vim.keymap.set('n', '<Leader>g', ':lua require("hop").hint_words()<CR>', { noremap = true, silent = true })
-vim.keymap.set('n', '<Leader>h', ':lua require("hop").hint_lines()<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<Leader>g', require("hop").hint_words, opts)
+vim.keymap.set('n', '<Leader>h', require("hop").hint_lines, opts)
 
--- Plugin: Comment
-require('Comment').setup {
+-- Plugin: comment
+require('comment').setup {
   ignore = "^$"
 }
 
 -- Plugin: indent_blankline
 require('indent_blankline').setup {
-    show_current_context = true,
-    show_current_context_start = true,
+  show_current_context = true,
+  show_current_context_start = true,
 }
 
 -- Plugin: lualine
 require('lualine').setup {
   options = {
-    theme = 'neon',
-    icons_enabled = false,
-    component_separators = '',
-    section_separators = '',
+    theme = 'nord',
+  },
+  sections = {
+    lualine_c = {
+      {
+        'filename', path = 1
+      },
+    }
+  },
+  inactive_sections = {
+    lualine_c = {
+      {
+        'filename', path = 1
+      },
+    }
   },
 }
 
--- Plugin: neon
-vim.g.neon_style = "default"
-vim.g.neon_italic_keyword = true
-vim.g.neon_italic_function = true
-vim.g.neon_transparent = true
+-- Plugin: autopairs
+require('nvim-autopairs').setup {
+  check_ts = true,
+  enable_check_bracket_line = false,
+  ignored_next_char = "[%w%.]",
+}
+
+-- Plugin: lspconfig
+vim.keymap.set('n', '[d', vim.diagnostic.goto_next, opts)
+vim.keymap.set('n', ']d', vim.diagnostic.goto_prev, opts)
+vim.keymap.set('n', '[q', vim.diagnostic.open_float, opts)
+vim.keymap.set('n', ']q', vim.diagnostic.setloclist, opts)
+
+local on_attach = function(client, bufnr)
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  local bufopts = { noremap = true, silent = true, buffer = bufnr }
+  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+
+  vim.keymap.set('n', 'ef', function() vim.lsp.buf.format({ async = true }) end, bufopts)
+  vim.keymap.set('n', 'eho', vim.lsp.buf.hover, bufopts)
+  vim.keymap.set('n', 'ern', vim.lsp.buf.rename, bufopts)
+  vim.keymap.set('n', 'eca', vim.lsp.buf.code_action, bufopts)
+
+  vim.keymap.set('n', 'ewa', vim.lsp.buf.add_workspace_folder, bufopts)
+  vim.keymap.set('n', 'ewr', vim.lsp.buf.remove_workspace_folder, bufopts)
+  vim.keymap.set('n', 'ewl', function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, bufopts)
+end
+
+require('lspconfig').clangd.setup {
+  on_attach = on_attach,
+}
+
+require('lspconfig').gopls.setup {
+  on_attach = on_attach,
+  cmd = { "/Users/michaelyang/go/bin/gopls", "serve" },
+  filetypes = { "go", "gomod" },
+  root_dir = require('lspconfig/util').root_pattern("go.work", "go.mod", ".git"),
+  settings = {
+    gopls = {
+      analyses = {
+        unusedparams = true,
+      },
+      staticcheck = true,
+    },
+  },
+}
+
+require('lspconfig').lua_ls.setup {
+  on_attach = on_attach,
+  settings = {
+    Lua = {
+      runtime = {
+        -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+        version = 'LuaJIT',
+      },
+      diagnostics = {
+        -- Get the language server to recognize the `vim` global
+        globals = { 'vim' },
+      },
+      workspace = {
+        -- Make the server aware of Neovim runtime files
+        library = vim.api.nvim_get_runtime_file("", true),
+        checkThirdParty = false,
+      },
+      -- Do not send telemetry data containing a randomized but unique identifier
+      telemetry = {
+        enable = false,
+      },
+    },
+  },
+}
+
+require('lspconfig').terraformls.setup {
+  on_attach = on_attach,
+}
+
+require('lspconfig').sourcekit.setup {
+  on_attach = on_attach,
+  cmd = { "sourcekit-lsp" },
+  root_dir = require('lspconfig/util').root_pattern("Package.swift", ".git"),
+}
+
+local augroup = vim.api.nvim_create_augroup('augroup', { clear = true })
 
 -- FileType: go
-vim.cmd([[autocmd FileType go set noexpandtab]])
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'go' },
+  command = 'setlocal noexpandtab',
+  group = augroup,
+})
 
--- Colorscheme
-vim.cmd([[colorscheme neon]])
+-- FileType: helm
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'helm' },
+  command = 'setlocal cms={{/*%s*/}}',
+  group = augroup,
+})
+
+-- FileType: markdown
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'markdown' },
+  command = 'setlocal wrap',
+  group = augroup,
+})
+
+-- colorscheme
+vim.cmd.colorscheme('nord')
