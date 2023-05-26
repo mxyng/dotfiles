@@ -89,6 +89,7 @@ alias anchor='docker run --rm -it -v $PWD:/mnt/$(basename $PWD) --workdir /mnt/$
 alias tf='terraform'
 
 alias vi='nvim'
+alias vimdiff='nvim -d'
 
 touch() { mkdir -p $(dirname $*); /usr/bin/touch $*; }
 
