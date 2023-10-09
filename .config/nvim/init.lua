@@ -1,14 +1,14 @@
 local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 
 if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    'git',
-    'clone',
-    '--filter=blob:none',
-    'https://github.com/folke/lazy.nvim.git',
-    '--branch=stable',
-    lazypath,
-  })
+	vim.fn.system({
+		'git',
+		'clone',
+		'--filter=blob:none',
+		'https://github.com/folke/lazy.nvim.git',
+		'--branch=stable',
+		lazypath,
+	})
 end
 
 vim.opt.rtp:prepend(lazypath)
@@ -50,53 +50,41 @@ vim.opt.clipboard = 'unnamed'
 vim.opt.mouse = ''
 
 -- Mappings
-local keymaps = {
-  { '<leader>z', vim.cmd.quit },
-  { '<leader>q', vim.cmd.quitall },
-  { '<leader>s', vim.cmd.write },
-
-  { 'zl',        '<nop>' },
-  { 'zw',        '<nop>' },
-}
-
-local keys = require('lazy.core.handler.keys')
-local utils = require('lazy.core.util')
-local defaults = {
-  silent = true,
-  noremap = true,
-}
-
-for _, keymap in pairs(keymaps) do
-  local key = keys.parse(keymap)
-  local opts = keys.opts(key)
-  vim.keymap.set(key.mode or 'n', key[1], key[2], utils.merge(defaults, opts))
-end
+vim.keymap.set('n', '<leader>z', vim.cmd.quit, { silent = true, noremap = true })
+vim.keymap.set('n', '<leader>q', vim.cmd.quitall, { silent = true, noremap = true })
+vim.keymap.set('n', '<leader>s', vim.cmd.write, { silent = true, noremap = true })
 
 require('lazy').setup('plugins', {
-  defaults = { lazy = true, version = false },
-  git = { url_format = 'git@github.com:%s.git' },
-  checker = { enabled = true, frequency = 86400 },
-  change_detection = { enabled = false, notify = false },
+	defaults = { lazy = true, version = false },
+	git = { url_format = 'git@github.com:%s.git' },
+	checker = { enabled = false, frequency = 86400 },
+	change_detection = { enabled = false, notify = false },
 })
 
 local augroup = vim.api.nvim_create_augroup('User', { clear = true })
 
 vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'go', 'lua' },
-  command = 'setlocal tabstop=2 shiftwidth=2 noexpandtab',
-  group = augroup
+	pattern = { 'go', 'lua' },
+	command = 'setlocal tabstop=2 shiftwidth=2 noexpandtab',
+	group = augroup
 })
 
 vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'helm' },
-  command = 'setlocal cms={{/*%s*/}}',
-  group = augroup
+	pattern = { 'python' },
+	command = 'setlocal tabstop=2 shiftwidth=2',
+	group = augroup
 })
 
 vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'markdown' },
-  command = 'setlocal wrap',
-  group = augroup
+	pattern = { 'helm' },
+	command = 'setlocal cms={{/*%s*/}}',
+	group = augroup
+})
+
+vim.api.nvim_create_autocmd('FileType', {
+	pattern = { 'markdown' },
+	command = 'setlocal wrap',
+	group = augroup
 })
 
 -- colorscheme
