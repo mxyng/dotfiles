@@ -1,6 +1,6 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH="/opt/homebrew/bin:$PATH"
+export PATH="/opt/homebrew/bin:$HOME/go/bin:$PATH"
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -91,53 +91,11 @@ alias tf='terraform'
 alias vi='nvim'
 alias vimdiff='nvim -d'
 
+alias pip='pip3 --require-virtualenv'
+
 touch() { mkdir -p $(dirname $*); /usr/bin/touch $*; }
 
 status() { echo >&2 ">>> $*"; }
-error() { status "ERROR: $*"; }
-tilde() { echo $1 | sed "s#$HOME#~#"; }
-
-deactivate() {
-  if [ -z "$ENVRC" ]; then
-    return
-  fi
-
-  status "unloading $(tilde $ENVRC)"
-
-  local IFS="$IFS="
-  while read LINE; do
-    set -- ${=LINE}
-    unset $2
-    status "unloaded $2"
-  done <$ENVRC
-
-  unset ENVRC ENVRC_NAME
-}
-
-activate() {
-  if [ -n "$ENVRC" ] || [ -n "$ENVRC_NAME" ]; then
-    error '"'$ENVRC_NAME'"' is already active. deactivate it before continuing
-    return
-  fi
-
-  ENVRC_NAME=$1
-  ENVRC="$HOME/Documents/aws/$1/.envrc"
-  if [ ! -f "$ENVRC" ]; then
-    error "unknown profile $1"
-    return
-  fi
-
-  status "loading $(tilde $ENVRC)"
-  source $ENVRC
-
-  local IFS="$IFS="
-  while read LINE; do
-    set -- ${=LINE}
-    status "loaded $2=$3"
-  done <$ENVRC
-
-  export ENVRC ENVRC_NAME
-}
 
 clone() {
   local GROUP=$(basename $(dirname $1))
@@ -184,6 +142,8 @@ export FZF_CTRL_R_OPTS="$FZF_DEFAULT_OPTS --preview 'echo {2..}' --preview-windo
 
 export FZF_ALT_C_COMMAND=$FZF_DEFAULT_COMMAND
 export FZF_ALT_C_OPTS="$FZF_DEFAULT_OPTS --preview 'tree -C {2..}'"
+
+export GIT_LFS_SKIP_SMUDGE=1
 
 if type brew &>/dev/null; then
   FPATH="$(brew --prefix)/share/zsh/site-functions:$FPATH"
