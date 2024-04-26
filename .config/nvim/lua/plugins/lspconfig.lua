@@ -3,51 +3,17 @@ return {
 	event = { "BufReadPre", "BufNewFile" },
 	opts = {
 		servers = {
-			pylsp = {
-				cmd = { '/Users/michaelyang/Library/Caches/pypoetry/virtualenvs/local-sWZ7gQg_-py3.11/bin/pylsp' },
-				settings = {
-					pylsp = {
-						plugins = {
-							autopep8 = { enabled = false },
-							pycodestyle = {
-								ignore = { 'E501' },
-								indentSize = 2,
-							},
-						},
-					},
-				},
-			},
+			ruff_lsp = {},
+			pyright = {},
 			clangd = {},
-			gopls = {
-				cmd = { '/Users/michaelyang/go/bin/gopls', 'serve' },
-				filetypes = { 'go', 'gomod' },
-				root_dir = function() require('lspconfig/util').root_pattern('go.work', 'go.mod', '.git') end,
-				settings = {
-					gopls = {
-						staticcheck = true,
-						analyses = {
-							nilness = true,
-							unusedparams = true,
-							unusedwrite = true,
-							usedany = true,
-							unusedvariable = true,
-						},
-					},
-				},
-			},
-			lua_ls = {
-				settings = {
-					Lua = {
-						runtime = { version = 'LuaJIT' },
-						diagnostics = { globals = { 'vim' } },
-						telemetry = { enable = false },
-						workspace = {
-							library = vim.api.nvim_get_runtime_file('', true),
-							checkThirdParty = false,
-						},
-					},
-				},
-			},
+			gopls = {},
+			rust_analyzer = {},
+			lua_ls = {},
+			tsserver = {},
+			jsonls = {},
+			eslint = {},
+			bashls = {},
+			yamlls = {},
 		},
 	},
 	config = function(_, opts)

@@ -1,6 +1,7 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH="/opt/homebrew/bin:$HOME/go/bin:$PATH"
+export PATH="/opt/homebrew/opt/postgresql@15/libexec/bin:$PATH"
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -70,7 +71,7 @@ ZSH_THEME=myang
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(fzf macos zoxide direnv)
+plugins=(fzf macos zoxide direnv zsh-syntax-highlighting)
 source $ZSH/oh-my-zsh.sh
 
 # use vim key bindings
@@ -145,6 +146,8 @@ export FZF_ALT_C_OPTS="$FZF_DEFAULT_OPTS --preview 'tree -C {2..}'"
 
 export GIT_LFS_SKIP_SMUDGE=1
 
+export no_proxy='*'
+
 if type brew &>/dev/null; then
   FPATH="$(brew --prefix)/share/zsh/site-functions:$FPATH"
   autoload -Uz compinit
@@ -159,5 +162,3 @@ fi
 if [ "$(id -u)" -eq 0 ]; then
   return
 fi
-
-[ -z "$TMUX" ] && [ "$(id -u)" -ne 0 ] && { tmux attach || exec tmux && exit; }

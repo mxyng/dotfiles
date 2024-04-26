@@ -1,4 +1,5 @@
 return {
-  "folke/tokyonight.nvim",
-  opts = { style = "moon" },
+	"rose-pine/neovim",
+	config = function()
+	end,
 }

@@ -49,6 +49,9 @@ vim.opt.clipboard = 'unnamed'
 -- Mouse
 vim.opt.mouse = ''
 
+-- Swap
+vim.opt.swapfile = false
+
 -- Mappings
 vim.keymap.set('n', '<leader>z', vim.cmd.quit, { silent = true, noremap = true })
 vim.keymap.set('n', '<leader>q', vim.cmd.quitall, { silent = true, noremap = true })
@@ -70,7 +73,7 @@ vim.api.nvim_create_autocmd('FileType', {
 })
 
 vim.api.nvim_create_autocmd('FileType', {
-	pattern = { 'python' },
+	pattern = { 'python', 'typescript', 'javascript', 'json', 'jsonnet' },
 	command = 'setlocal tabstop=2 shiftwidth=2',
 	group = augroup
 })
@@ -88,4 +91,4 @@ vim.api.nvim_create_autocmd('FileType', {
 })
 
 -- colorscheme
-vim.cmd.colorscheme('tokyonight')
+vim.cmd.colorscheme('rose-pine')
