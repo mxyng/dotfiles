@@ -1,55 +1,49 @@
 [user]
 	email = mxyng@pm.me
-    name = Michael Yang
+	name = Michael Yang
 
 [core]
-    editor = nvim
+	editor = nvim
 
 [alias]
-    st = status -sb
-    ci = commit
-    co = checkout
-    br = branch
-    df = diff
-    dc = diff --cached
-    cp = cherry-pick
-    who = shortlog -s --
-    undo = reset --hard
-    lg = log --oneline -p
-    ll = log --oneline --numstat
-    lsd = log --oneline --graph
-    rbi = rebase -i
-    amend = commit --amend
-    touch = commit --amend --no-edit
-    ap = add -p
-    tmp = commit -pm tmp
+	st = status -sb
+	ci = commit
+	co = checkout
+	br = branch
+	df = diff
+	dc = diff --cached
+	cp = cherry-pick
+	who = shortlog -s --
+	undo = reset --hard
+	lg = log --oneline -p
+	ll = log --oneline --numstat
+	lsd = log --oneline --graph
+	rbi = rebase -i
+	amend = commit --amend
+	touch = commit --amend --no-edit
+	ap = add -p
+	tmp = commit -pm tmp
 
 [color]
-    ui = true
+	ui = true
 
 [pull]
-    rebase = true
+	rebase = true
 
 [merge]
-    conflictstyle = diff3
+	conflictstyle = diff3
 
 [pager]
-    branch = false
+	branch = false
 
 [fetch]
-    prune = true
-
-[includeIf "gitdir:~/git/infrahq/"]
-    path = ~/git/infrahq/.gitconfig
-
-[includeIf "gitdir:~/git/keypairdev/"]
-    path = ~/git/keypairdev/.gitconfig
+	prune = true
 
 [init]
-    defaultBranch = main
+	defaultBranch = main
 
 [url "git@github.com:"]
-    insteadOf = https://github.com/
+	insteadOf = https://github.com/
 
 [filter "lfs"]
 	clean = git-lfs clean -- %f
