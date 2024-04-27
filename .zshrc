@@ -73,7 +73,7 @@ export GIT_LFS_SKIP_SMUDGE=1
 export GIT_PS1_SHOWUPSTREAM=verbose
 
 precmd () {
-    PS1='%F{red}%1~%f'
+    PS1='%F{red}%2~%f'
     if [ -n "$VIRTUAL_ENV" ]; then
         PS1="$PS1 %F{green}($VIRTUAL_ENV_PROMPT)%f"
     fi
