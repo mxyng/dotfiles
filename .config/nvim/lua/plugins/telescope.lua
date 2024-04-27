@@ -8,15 +8,7 @@ return {
 			'<leader>p',
 			function()
 				require('telescope.builtin').find_files({
-					find_command = {
-						"rg",
-						"--files",
-						"--hidden",
-						"--no-ignore",
-						"--ignore-file=.ignore",
-						"--ignore-file=~/.ignore",
-						"--smart-case",
-					},
+					find_command = { "rg", "--files", "--hidden", "--smart-case" },
 				})
 			end,
 		},

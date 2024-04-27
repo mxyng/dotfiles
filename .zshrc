@@ -42,7 +42,7 @@ if type fzf &>/dev/null; then
 fi
 
 if type rg &>/dev/null; then
-    export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!**/.git/*" --glob "!**/node_modules/*" --no-ignore --smart-case'
+    export FZF_DEFAULT_COMMAND='rg --files --hidden --smart-case'
 fi
 
 export FZF_DEFAULT_OPTS="--preview-window right,40%,sharp --cycle --height 50% --border sharp --info inline --color label:bold --tabstop 1 --layout reverse --exit-0 --select-1"
