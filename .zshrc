@@ -4,9 +4,9 @@ alias ll='ls -al'
 alias ls='ls -G'
 alias grep='grep --color=auto'
 
-if type brew &>/dev/null; then
+if [ -x '/opt/homebrew/bin/brew' ]; then
+    eval $(/opt/homebrew/bin/brew shellenv)
     fpath+=($(brew --prefix)/share/zsh/site-functions)
-    eval $(brew shellenv)
 fi
 
 if [ -d "$(brew --prefix)/share/zsh-completions" ]; then
