@@ -5,11 +5,23 @@ alias ls='ls -G'
 alias grep='grep --color=auto'
 
 if type brew &>/dev/null; then
-    FPATH="$(brew --prefix)/share/zsh/site-functions:$FPATH"
-    autoload -Uz compinit
-    compinit
-
+    fpath+=($(brew --prefix)/share/zsh/site-functions)
     eval $(brew shellenv)
+fi
+
+if [ -d "$(brew --prefix)/share/zsh-completions" ]; then
+    fpath+=$(brew --prefix)/share/zsh-completions
+fi
+
+if [ -d "$(brew --prefix)/share/zsh-syntax-highlighting" ]; then
+    source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
+
+if [ -d "$(brew --prefix)/share/zsh-autosuggestions" ]; then
+    source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+    bindkey '^Y' autosuggest-accept
+
+    export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 fi
 
 if type nvim &>/dev/null; then
@@ -58,10 +70,6 @@ if type zoxide &>/dev/null; then
     eval "$(zoxide init zsh)"
 fi
 
-if [ -d "$HOMEBREW_PREFIX/share/zsh-syntax-highlighting" ]; then
-    source $HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-fi
-
 if type go &>/dev/null; then
     GOBIN=$(go env GOBIN)
     [ -z "$GOBIN" ] && GOBIN=$(go env GOPATH)/bin
@@ -77,8 +85,11 @@ precmd () {
         PS1="$PS1 %F{green}($VIRTUAL_ENV_PROMPT)%f"
     fi
 
-    if [ -f "$HOMEBREW_PREFIX/etc/bash_completion.d/git-prompt.sh" ]; then
-        . $HOMEBREW_PREFIX/etc/bash_completion.d/git-prompt.sh
+    if [ -f "$(brew --prefix)/etc/bash_completion.d/git-prompt.sh" ]; then
+        . $(brew --prefix)/etc/bash_completion.d/git-prompt.sh
         __git_ps1 "$PS1%F{yellow}" '%f %F{blue}%(!.#.$)%f ' ' : %s'
     fi
 }
+
+autoload -Uz compinit
+compinit -u
