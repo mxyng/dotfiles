@@ -32,7 +32,7 @@ if type kubectx &>/dev/null; then
 fi
 
 if type docker &>/dev/null; then
-alias anchor='docker run --rm -it -v $PWD:/mnt/$(basename $PWD) --workdir /mnt/$(basename $PWD)'
+    alias anchor='docker run --rm -it -v $PWD:/mnt/$(basename $PWD) --workdir /mnt/$(basename $PWD)'
 fi
 
 export MANWIDTH=80
@@ -60,6 +60,12 @@ fi
 
 if [ -d "$HOMEBREW_PREFIX/share/zsh-syntax-highlighting" ]; then
     source $HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
+
+if type go &>/dev/null; then
+    GOBIN=$(go env GOBIN)
+    [ -z "$GOBIN" ] && GOBIN=$(go env GOPATH)/bin
+    path+=("$GOBIN")
 fi
 
 export GIT_LFS_SKIP_SMUDGE=1
