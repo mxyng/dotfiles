@@ -58,19 +58,21 @@ if type zoxide &>/dev/null; then
     eval "$(zoxide init zsh)"
 fi
 
-export GIT_LFS_SKIP_SMUDGE=1
-export GIT_PS1_SHOWUPSTREAM=verbose
-
-PS1='%F{red}%1~%f'
-if [ -n "$VIRTUAL_ENV" ]; then
-    PS1="$PS1 %F{green}($VIRTUAL_ENV_PROMPT)%f"
-fi
-
-if [ -f "$HOMEBREW_PREFIX/etc/bash_completion.d/git-prompt.sh" ]; then
-    . $HOMEBREW_PREFIX/etc/bash_completion.d/git-prompt.sh
-    __git_ps1 "$PS1%F{yellow}" '%f %F{blue}%(!.#.$)%f ' ' : %s'
-fi
-
 if [ -d "$HOMEBREW_PREFIX/share/zsh-syntax-highlighting" ]; then
     source $HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
+
+export GIT_LFS_SKIP_SMUDGE=1
+export GIT_PS1_SHOWUPSTREAM=verbose
+
+precmd () {
+    PS1='%F{red}%1~%f'
+    if [ -n "$VIRTUAL_ENV" ]; then
+        PS1="$PS1 %F{green}($VIRTUAL_ENV_PROMPT)%f"
+    fi
+
+    if [ -f "$HOMEBREW_PREFIX/etc/bash_completion.d/git-prompt.sh" ]; then
+        . $HOMEBREW_PREFIX/etc/bash_completion.d/git-prompt.sh
+        __git_ps1 "$PS1%F{yellow}" '%f %F{blue}%(!.#.$)%f ' ' : %s'
+    fi
+}
