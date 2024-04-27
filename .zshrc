@@ -49,21 +49,14 @@ fi
 
 export MANWIDTH=80
 
+export FZF_DEFAULT_OPTS="--preview-window right,40%,sharp --cycle --height 50% --border sharp --info inline --color label:bold --tabstop 1 --layout reverse --exit-0 --select-1"
+export FZF_CTRL_T_OPTS="--preview '[ -f {} ] && bat -n --color=always {} || tree -C {}' --walker-skip .git,node_modules,target"
+export FZF_CTRL_R_OPTS="--preview 'echo {2..}' --preview-window right,40%,sharp,wrap"
+export FZF_ALT_C_OPTS="--preview 'tree -C {}' --walker-skip .git,node_modules,target"
+
 if type fzf &>/dev/null; then
     eval "$(fzf --zsh)"
 fi
-
-if type rg &>/dev/null; then
-    export FZF_DEFAULT_COMMAND='rg --files --hidden --smart-case'
-fi
-
-export FZF_DEFAULT_OPTS="--preview-window right,40%,sharp --cycle --height 50% --border sharp --info inline --color label:bold --tabstop 1 --layout reverse --exit-0 --select-1"
-export FZF_CTRL_T_COMMAND=$FZF_DEFAULT_COMMAND
-export FZF_CTRL_T_OPTS="$FZF_DEFAULT_OPTS --preview 'bat -n --color=always {}'"
-export FZF_CTRL_R_COMMAND=$FZF_DEFAULT_COMMAND
-export FZF_CTRL_R_OPTS="$FZF_DEFAULT_OPTS --preview 'echo {2..}' --preview-window right,40%,sharp,wrap"
-export FZF_ALT_C_COMMAND=$FZF_DEFAULT_COMMAND
-export FZF_ALT_C_OPTS="$FZF_DEFAULT_OPTS --preview 'tree -C {2..}'"
 
 if type zoxide &>/dev/null; then
     export _ZO_FZF_OPTS="$FZF_DEFAULT_OPTS --preview 'tree -C {2..}' --exact --no-sort"
