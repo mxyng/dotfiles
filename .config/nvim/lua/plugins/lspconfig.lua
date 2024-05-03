@@ -14,6 +14,7 @@ return {
 			eslint = {},
 			bashls = {},
 			yamlls = {},
+			sourcekit = {},
 		},
 	},
 	config = function(_, opts)
