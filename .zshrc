@@ -31,10 +31,6 @@ fi
 
 if type bat &>/dev/null; then
     alias cat='bat'
-
-    if [ -d "~/.config/bat/themes/rose-pine" ]; then
-        export BAT_THEME="rose-pine"
-    fi
 fi
 
 if type kubectl &>/dev/null; then
