@@ -35,7 +35,7 @@
     conflictstyle = diff3
 
 [pager]
-    branch = false
+    status = true
 
 [fetch]
     prune = true
