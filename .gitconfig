@@ -4,13 +4,12 @@
 
 [core]
     editor = nvim
-    pager = delta
 
 [alias]
     st = status -sb
     ci = commit
     co = checkout
-    br = branch
+    br = branch --format '%(HEAD) %(if)%(HEAD)%(then)%(color:bold cyan)%(end)%(refname:strip=2)%(color:reset) %(color:bold green)%(upstream:strip=2)%(color:reset) %(color:yellow)%(upstream:track)%(color:reset)'
     df = diff
     dc = diff --cached
     cp = cherry-pick
@@ -20,10 +19,8 @@
     ll = log --oneline --numstat
     lsd = log --oneline --graph
     rbi = rebase -i
-    amend = commit --amend
-    touch = commit --amend --no-edit
+    fu = commit --fixup
     ap = add -p
-    tmp = commit -pm tmp
 
 [color]
     ui = true
@@ -52,6 +49,5 @@
     process = git-lfs filter-process
     required = true
 
-[delta]
-    side-by-side = true
-    line-numbers = true
+[rebase]
+    autosquash = true

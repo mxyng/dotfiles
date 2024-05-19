@@ -70,25 +70,31 @@ local augroup = vim.api.nvim_create_augroup('User', { clear = true })
 vim.api.nvim_create_autocmd('FileType', {
 	pattern = { 'go', 'lua' },
 	command = 'setlocal tabstop=2 shiftwidth=2 noexpandtab',
-	group = augroup
+	group = augroup,
 })
 
 vim.api.nvim_create_autocmd('FileType', {
 	pattern = { 'python', 'typescript', 'javascript', 'json', 'jsonnet' },
 	command = 'setlocal tabstop=2 shiftwidth=2',
-	group = augroup
+	group = augroup,
 })
 
 vim.api.nvim_create_autocmd('FileType', {
 	pattern = { 'helm' },
 	command = 'setlocal cms={{/*%s*/}}',
-	group = augroup
+	group = augroup,
 })
 
 vim.api.nvim_create_autocmd('FileType', {
 	pattern = { 'markdown' },
 	command = 'setlocal wrap',
-	group = augroup
+	group = augroup,
+})
+
+vim.api.nvim_create_autocmd('BufEnter', {
+	pattern = { '*.gotmpl' },
+	command = 'setlocal binary noeol',
+	group = augroup,
 })
 
 -- colorscheme

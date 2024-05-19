@@ -86,6 +86,10 @@ if type go &>/dev/null; then
     path+=("$GOBIN")
 fi
 
+if [ -d "$HOME/.cargo/bin/" ]; then
+    path+=("$HOME/.cargo/bin/")
+fi
+
 export GIT_LFS_SKIP_SMUDGE=1
 export GIT_PS1_SHOWUPSTREAM=verbose
 
