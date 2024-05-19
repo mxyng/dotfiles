@@ -15,11 +15,6 @@ return {
 		},
 	},
 	{
-		'echasnovski/mini.comment',
-		event = 'VeryLazy',
-		opts = { options = { ignore_blank_line = true } },
-	},
-	{
 		'echasnovski/mini.bufremove',
 		event = 'VeryLazy',
 		keys = {
