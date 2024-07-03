@@ -1,6 +1,7 @@
 node_modules/
-vendor/
 
 pyrightconfig.json
 
 go.work.sum
+
+*.o

@@ -12,8 +12,10 @@ return {
 				})
 			end,
 		},
-		{ '<leader>j', function() require('telescope.builtin').lsp_document_symbols() end, },
+		{ '<leader>a', function() require('telescope.builtin').live_grep() end },
 		{ '<leader>f', function() require('telescope.builtin').lsp_dynamic_workspace_symbols() end, },
+		{ '<leader>j', function() require('telescope.builtin').lsp_document_symbols() end, },
+		{ '<leader>l', function() require('telescope.builtin').current_buffer_fuzzy_find() end },
 		{
 			'gd',
 			function()

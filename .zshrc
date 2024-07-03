@@ -18,15 +18,15 @@ if [ -x '/opt/homebrew/bin/brew' ]; then
     fpath+=($(brew --prefix)/share/zsh/site-functions)
 fi
 
-if [ -d "$(brew --prefix)/share/zsh-completions" ]; then
+if type brew &>/dev/null && [ -d "$(brew --prefix)/share/zsh-completions" ]; then
     fpath+=$(brew --prefix)/share/zsh-completions
 fi
 
-if [ -d "$(brew --prefix)/share/zsh-syntax-highlighting" ]; then
+if type brew &>/dev/null && [ -d "$(brew --prefix)/share/zsh-syntax-highlighting" ]; then
     source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
 
-if [ -d "$(brew --prefix)/share/zsh-autosuggestions" ]; then
+if type brew &>/dev/null && [ -d "$(brew --prefix)/share/zsh-autosuggestions" ]; then
     source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
     bindkey '^Y' autosuggest-accept
 
@@ -99,7 +99,7 @@ precmd () {
         PS1="$PS1 %F{green}($VIRTUAL_ENV_PROMPT)%f"
     fi
 
-    if [ -f "$(brew --prefix)/etc/bash_completion.d/git-prompt.sh" ]; then
+    if type brew &>/dev/null && [ -f "$(brew --prefix)/etc/bash_completion.d/git-prompt.sh" ]; then
         . $(brew --prefix)/etc/bash_completion.d/git-prompt.sh
         __git_ps1 "$PS1%F{yellow}" '%f %F{blue}%(!.#.$)%f ' ' : %s'
     fi

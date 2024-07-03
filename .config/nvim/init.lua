@@ -97,5 +97,11 @@ vim.api.nvim_create_autocmd('BufEnter', {
 	group = augroup,
 })
 
+vim.api.nvim_create_autocmd('FileType', {
+	pattern = { 'make' },
+	command = 'setlocal noexpandtab',
+	group = augroup,
+})
+
 -- colorscheme
 vim.cmd.colorscheme('rose-pine')
