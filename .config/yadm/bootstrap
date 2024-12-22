@@ -1,28 +1,36 @@
 #!/bin/sh
 set -eu
 
+status() { echo ">>> $@"; }
+
 ( cd $HOME;
     yadm submodule update --recursive --init )
 
 if ! command -v brew >/dev/null; then
+    status "Installing Homebrew..."
     curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | sh
 fi
 
 if [ -f "$HOME/.Brewfile" ]; then
+    status "Updating Homebrew bundles..."
     brew bundle --file "$HOME/.Brewfile"
 fi
 
-if command -v nvim >/dev/null; then
-    nvim '+Lazy update' '+quitall'
-fi
-
 if command -v tmux >/dev/null; then
+    status "Installing tmux plugins..."
     sh "$HOME/.tmux/plugins/tpm/bin/install_plugins"
 fi
 
+if command -v nvim >/dev/null; then
+    status "Installing Neovim plugins..."
+    nvim '+Lazy update' '+quitall'
+fi
+
 if command -v bat >/dev/null; then
-    curl -fsSL -O --create-dirs \
-        --output-dir "$HOME/.config/bat/themes" \
-        https://raw.githubusercontent.com/rose-pine/tm-theme/refs/heads/main/dist/themes/rose-pine.tmTheme
+    status "Install bat themes..."
+    BAT_THEMES="https://raw.githubusercontent.com/rose-pine/tm-theme/refs/heads/main/dist/themes/rose-pine.tmTheme"
+    for BAT_THEME in $BAT_THEMES; do
+        curl -fsSL -O --create-dirs --output-dir "$HOME/.config/bat/themes" $BAT_THEME
+    done
     bat cache --build
 fi
