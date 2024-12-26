@@ -1,4 +1,8 @@
+.git/
+
 node_modules/
+
+.envrc
 
 pyrightconfig.json
 
