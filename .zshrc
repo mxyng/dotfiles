@@ -80,6 +80,10 @@ if type zoxide &>/dev/null; then
     eval "$(zoxide init zsh)"
 fi
 
+if type direnv &>/dev/null; then
+    eval "$(direnv hook zsh)"
+fi
+
 if type go &>/dev/null; then
     GOBIN=$(go env GOBIN)
     [ -z "$GOBIN" ] && GOBIN=$(go env GOPATH)/bin

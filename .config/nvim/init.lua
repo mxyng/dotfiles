@@ -74,32 +74,20 @@ vim.api.nvim_create_autocmd('FileType', {
 })
 
 vim.api.nvim_create_autocmd('FileType', {
-	pattern = { 'python', 'typescript', 'javascript', 'json', 'jsonnet' },
+	pattern = { 'typescript', 'javascript', 'json', 'jsonnet' },
 	command = 'setlocal tabstop=2 shiftwidth=2',
 	group = augroup,
 })
 
 vim.api.nvim_create_autocmd('FileType', {
+	pattern = { 'editorconfig' },
+	command = 'setlocal commentstring=#\\ %s',
+	group = augroup,
+})
+
+vim.api.nvim_create_autocmd('FileType', {
 	pattern = { 'helm' },
-	command = 'setlocal cms={{/*%s*/}}',
-	group = augroup,
-})
-
-vim.api.nvim_create_autocmd('FileType', {
-	pattern = { 'markdown' },
-	command = 'setlocal wrap',
-	group = augroup,
-})
-
-vim.api.nvim_create_autocmd('BufEnter', {
-	pattern = { '*.gotmpl' },
-	command = 'setlocal binary noeol',
-	group = augroup,
-})
-
-vim.api.nvim_create_autocmd('FileType', {
-	pattern = { 'make' },
-	command = 'setlocal noexpandtab',
+	command = 'setlocal commentstring={{/*%s*/}}',
 	group = augroup,
 })
 
