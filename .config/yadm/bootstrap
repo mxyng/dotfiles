@@ -34,13 +34,13 @@ if command -v kitty >/dev/null; then
         kitty +kitten themes --reload-in none --dump-theme "$KITTY_THEME"
 
         echo 'active_border_color   #f6c177'
-        echo 'active_tab_foreground #232136'
+        echo 'active_tab_foreground #191724'
         echo 'active_tab_background #f6c177'
         echo
         echo 'inactive_border_color   #524f67'
         echo 'inactive_tab_foreground #c4a7e7'
-        echo 'inactive_tab_background #232136'
+        echo 'inactive_tab_background #191724'
 
-    } >"$HOME/.config/kitty/theme.conf"
+    } >"$HOME/.config/kitty/current-theme.conf"
     ps -x -o pid=,comm= | awk '/kitty/ { print $1 }' | xargs kill -USR1
 fi
