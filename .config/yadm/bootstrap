@@ -1,9 +1,10 @@
 #!/bin/sh
-set -e
+set -eu
 
 status() { echo ">>> $@"; }
 
-(cd $HOME; yadm submodule update --recursive --init)
+( cd $HOME;
+    yadm submodule update --recursive --init )
 
 if ! command -v brew >/dev/null; then
     status "Installing Homebrew..."
@@ -12,35 +13,24 @@ fi
 
 if [ -f "$HOME/.Brewfile" ]; then
     status "Updating Homebrew bundles..."
-    brew bundle --file "$HOME/.Brewfile" --cleanup
+    brew bundle --file "$HOME/.Brewfile"
+fi
+
+if command -v tmux >/dev/null; then
+    status "Installing tmux plugins..."
+    sh "$HOME/.tmux/plugins/tpm/bin/install_plugins"
 fi
 
 if command -v nvim >/dev/null; then
     status "Installing Neovim plugins..."
-    nvim --headless '+quitall'
+    nvim '+Lazy update' '+quitall'
 fi
 
 if command -v bat >/dev/null; then
     status "Install bat themes..."
-    BAT_THEME="https://raw.githubusercontent.com/rose-pine/tm-theme/refs/heads/main/dist/themes/rose-pine.tmTheme"
-    curl -fsSL -O --create-dirs --output-dir "$HOME/.config/bat/themes" $BAT_THEME
+    BAT_THEMES="https://raw.githubusercontent.com/rose-pine/tm-theme/refs/heads/main/dist/themes/rose-pine.tmTheme"
+    for BAT_THEME in $BAT_THEMES; do
+        curl -fsSL -O --create-dirs --output-dir "$HOME/.config/bat/themes" $BAT_THEME
+    done
     bat cache --build
-fi
-
-if command -v kitty >/dev/null; then
-    status "Install kitty themes..."
-    KITTY_THEME='Rosé Pine'
-    {
-        kitty +kitten themes --reload-in none --dump-theme "$KITTY_THEME"
-
-        echo 'active_border_color   #f6c177'
-        echo 'active_tab_foreground #191724'
-        echo 'active_tab_background #f6c177'
-        echo
-        echo 'inactive_border_color   #524f67'
-        echo 'inactive_tab_foreground #c4a7e7'
-        echo 'inactive_tab_background #191724'
-
-    } >"$HOME/.config/kitty/current-theme.conf"
-    ps -x -o pid=,comm= | awk '/kitty/ { print $1 }' | xargs kill -USR1
 fi
