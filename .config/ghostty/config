@@ -1,0 +1,15 @@
+theme = rose-pine
+
+font-size = 11
+font-feature = -calt
+font-feature = -dlig
+font-feature = -liga
+
+macos-option-as-alt = true
+quit-after-last-window-closed = true
+
+mouse-hide-while-typing = true
+
+unfocused-split-opacity = 0.3
+window-inherit-working-directory = false
+window-save-state = never
