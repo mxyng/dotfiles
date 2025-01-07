@@ -28,9 +28,25 @@ fi
 
 if command -v bat >/dev/null; then
     status "Install bat themes..."
-    BAT_THEMES="https://raw.githubusercontent.com/rose-pine/tm-theme/refs/heads/main/dist/themes/rose-pine.tmTheme"
+    BAT_THEMES="
+        https://raw.githubusercontent.com/rose-pine/tm-theme/refs/heads/main/dist/themes/rose-pine.tmTheme
+        https://raw.githubusercontent.com/rose-pine/tm-theme/refs/heads/main/dist/themes/rose-pine-dawn.tmTheme
+        https://raw.githubusercontent.com/rose-pine/tm-theme/refs/heads/main/dist/themes/rose-pine-moon.tmTheme"
     for BAT_THEME in $BAT_THEMES; do
         curl -fsSL -O --create-dirs --output-dir "$HOME/.config/bat/themes" $BAT_THEME
     done
     bat cache --build
+fi
+
+if command -v fzf >/dev/null; then
+    status "Install fzf themes..."
+    FZF_THEMES="
+        https://raw.githubusercontent.com/rose-pine/fzf/refs/heads/main/dist/rose-pine.sh
+        https://raw.githubusercontent.com/rose-pine/fzf/refs/heads/main/dist/rose-pine-dawn.sh
+        https://raw.githubusercontent.com/rose-pine/fzf/refs/heads/main/dist/rose-pine-moon.sh"
+    for FZF_THEME in $FZF_THEMES; do
+        curl -fsSL -O --create-dirs --output-dir "$HOME/.config/fzf/themes" $FZF_THEME
+    done
+
+    . "$HOME/.zshrc"
 fi
