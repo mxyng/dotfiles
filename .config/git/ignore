@@ -1,11 +1,10 @@
+.aliases/
 .git/
-
 node_modules/
 
 .envrc
-
+go.work.sum
 pyrightconfig.json
 
-go.work.sum
-
 *.o
+*.patched

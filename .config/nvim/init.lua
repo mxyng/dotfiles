@@ -90,6 +90,3 @@ vim.api.nvim_create_autocmd('FileType', {
 	command = 'setlocal commentstring={{/*%s*/}}',
 	group = augroup,
 })
-
--- colorscheme
-vim.cmd.colorscheme('rose-pine')
