@@ -52,10 +52,6 @@ if type kubectx &>/dev/null; then
     alias dd='kubectx docker-desktop'
 fi
 
-if type docker &>/dev/null; then
-    alias anchor='docker run --rm -it -v $PWD:/mnt/$(basename $PWD) --workdir /mnt/$(basename $PWD)'
-fi
-
 export MANWIDTH=80
 
 . "$HOME/.config/fzf/themes/rose-pine.sh"
@@ -76,16 +72,6 @@ fi
 
 if type direnv &>/dev/null; then
     eval "$(direnv hook zsh)"
-fi
-
-if type go &>/dev/null; then
-    GOBIN=$(go env GOBIN)
-    [ -z "$GOBIN" ] && GOBIN=$(go env GOPATH)/bin
-    path+=("$GOBIN")
-fi
-
-if [ -d "$HOME/.cargo/bin/" ]; then
-    path+=("$HOME/.cargo/bin/")
 fi
 
 export GIT_LFS_SKIP_SMUDGE=1

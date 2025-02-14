@@ -91,4 +91,10 @@ vim.api.nvim_create_autocmd('FileType', {
 	group = augroup,
 })
 
+vim.api.nvim_create_autocmd('FileType', {
+	pattern = { 'markdown' },
+	command = 'setlocal wrap',
+	group = augroup,
+})
+
 vim.cmd.colorscheme('rose-pine')
