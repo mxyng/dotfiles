@@ -74,6 +74,12 @@ if type direnv &>/dev/null; then
     eval "$(direnv hook zsh)"
 fi
 
+if type go &>/dev/null; then
+    GOBIN=$(go env GOBIN)
+    [ -z "$GOBIN" ] && GOBIN=$(go env GOPATH)/bin
+    path+=($GOBIN)
+fi
+
 export GIT_LFS_SKIP_SMUDGE=1
 export GIT_PS1_SHOWUPSTREAM=verbose
 

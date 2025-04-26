@@ -1,5 +1,5 @@
 [user]
-    email = mxyng@pm.me
+    email = git@mxy.ng
     name = Michael Yang
 
 [core]
@@ -21,6 +21,7 @@
     rbi = rebase -i
     fu = commit --fixup
     ap = add -p
+    touch = commit --amend --no-edit
 
 [color]
     ui = true
@@ -29,19 +30,21 @@
     rebase = true
 
 [merge]
-    conflictstyle = diff3
+    conflictstyle = zdiff3
 
 [pager]
     status = true
 
 [fetch]
     prune = true
+    prunetags = true
+    all = true
 
 [init]
-    defaultBranch = main
+    defaultbranch = main
 
 [url "git@github.com:"]
-    insteadOf = https://github.com/
+    insteadof = https://github.com/
 
 [filter "lfs"]
     clean = git-lfs clean -- %f
@@ -52,3 +55,29 @@
 [rebase]
     autosquash = true
     autostash = true
+    updaterefs = true
+
+[column]
+    ui = auto
+
+[branch]
+    sort = -committerdate
+
+[tag]
+    sort = version:refname
+
+[diff]
+    ; algorithm = histogram
+    colormoved = plain
+    mnemonicprefix = true
+    renames = true
+
+[commit]
+    verbose = true
+
+[rerere]
+    enabled = true
+    autoupdate = true
+
+[feature]
+    experimental = true
