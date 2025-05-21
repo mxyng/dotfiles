@@ -1,10 +1,16 @@
-.aliases/
-.git/
-node_modules/
+.DS_Store
 
 .envrc
+.aliases/
+.git/
+.ccache/
+
+node_modules/
+
 go.work.sum
 pyrightconfig.json
 
 *.o
 *.patched
+
+Makefile.me

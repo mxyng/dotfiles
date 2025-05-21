@@ -3,48 +3,51 @@ return {
 	event = { "BufReadPre", "BufNewFile" },
 	opts = {
 		servers = {
-			-- bashls =  {},
-			clangd =	{},
-			gopls =		{
-				settings = {
-					gopls = {
-						staticcheck = true,
-						gofumpt = true,
-					},
+			clangd = {},
+			gopls = {
+				gopls = {
+					staticcheck = true,
+					gofumpt = true,
 				},
 			},
-			-- jsonls =  {},
-			-- lua_ls =  {},
-			ruff =		{},
+			ruff = {},
 			pyright = {
-				settings = {
-					python = {
-						pythonPath = ".venv/bin/python",
-					}
+				python = {
+					pythonPath = ".venv/bin/python",
 				}
 			},
-			-- yamlls =  {},
 			astro = {},
 			rust_analyzer = {},
 		},
 	},
 	config = function(_, opts)
-		vim.api.nvim_create_autocmd('LspAttach', {
-			callback = function(args)
-				local buffer = args.buf
-				vim.keymap.set('n', 'ef', function() vim.lsp.buf.format({ async = true }) end, { buffer = buffer, silent = true, noremap = true })
-				vim.keymap.set('n', 'eho', vim.lsp.buf.hover, { buffer = buffer, silent = true, noremap = true })
-				vim.keymap.set('n', 'ern', vim.lsp.buf.rename, { buffer = buffer, silent = true, noremap = true })
-				vim.keymap.set('n', 'eca', function() vim.lsp.buf.code_action({ context = { only = {'quickfix', 'source.organizeImports'} } }) end, { buffer = buffer, silent = true, noremap = true })
-				vim.keymap.set('n', 'ecl', vim.lsp.codelens.run, { buffer = buffer, silent = true, noremap = true })
-				vim.keymap.set('n', 'err', function() vim.cmd("LspRestart") end , { buffer = buffer, silent = true, noremap = true })
+		local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+		on_attach = function(client, bufnr)
+			if client.supports_method("textDocument/formatting") then
+				vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+				vim.api.nvim_create_autocmd("BufWritePre", {
+					group = augroup,
+					buffer = bufnr,
+					callback = function()
+						vim.lsp.buf.format()
+					end,
+				})
+			end
 
-				vim.api.nvim_buf_set_option(buffer, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-			end,
-		})
+			vim.lsp.completion.enable(true, client.id, bufnr, {
+				autotrigger = true,
+				convert = function(item)
+					return { abbr = item.label:gsub('%b()', '') }
+				end,
+			})
+		end
 
-		for server, opts in pairs(opts.servers or {}) do
-			require('lspconfig')[server].setup(opts)
+		for server, settings in pairs(opts.servers or {}) do
+			vim.lsp.enable(server)
+			vim.lsp.config(server, {
+				settings = settings,
+				on_attach = on_attach,
+			})
 		end
 	end,
 }

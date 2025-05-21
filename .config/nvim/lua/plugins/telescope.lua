@@ -13,11 +13,9 @@ return {
 			end,
 		},
 		{ '<leader>a', function() require('telescope.builtin').live_grep() end },
-		{ '<leader>f', function() require('telescope.builtin').lsp_dynamic_workspace_symbols() end, },
-		{ '<leader>j', function() require('telescope.builtin').lsp_document_symbols() end, },
 		{ '<leader>l', function() require('telescope.builtin').current_buffer_fuzzy_find() end },
 		{
-			'gd',
+			'<C-]>',
 			function()
 				require('telescope.builtin').lsp_definitions({
 					jump_type = 'never',
@@ -25,12 +23,27 @@ return {
 			end,
 		},
 		{
-			'gr',
+			'gri',
+			function()
+				require('telescope.builtin').lsp_implementations({
+					include_current_line = true,
+					jump_type = 'never',
+				})
+			end,
+		},
+		{
+			'grr',
 			function()
 				require('telescope.builtin').lsp_references({
 					include_current_line = true,
 					jump_type = 'never',
 				})
+			end,
+		},
+		{
+			'gO',
+			function()
+				require('telescope.builtin').lsp_document_symbols()
 			end,
 		},
 	},
