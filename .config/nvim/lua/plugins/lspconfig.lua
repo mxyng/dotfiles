@@ -1,8 +1,8 @@
 return {
-	'neovim/nvim-lspconfig',
+	"neovim/nvim-lspconfig",
 	event = { "BufReadPre", "BufNewFile" },
 	opts = {
-		servers = {
+		settings = {
 			clangd = {},
 			gopls = {
 				gopls = {
@@ -18,35 +18,44 @@ return {
 			},
 			astro = {},
 			rust_analyzer = {},
+			lua_ls = {},
 		},
 	},
 	config = function(_, opts)
-		local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
-		on_attach = function(client, bufnr)
-			if client.supports_method("textDocument/formatting") then
-				vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
-				vim.api.nvim_create_autocmd("BufWritePre", {
-					group = augroup,
-					buffer = bufnr,
-					callback = function()
-						vim.lsp.buf.format()
-					end,
-				})
-			end
-
-			vim.lsp.completion.enable(true, client.id, bufnr, {
-				autotrigger = true,
-				convert = function(item)
-					return { abbr = item.label:gsub('%b()', '') }
-				end,
-			})
-		end
-
-		for server, settings in pairs(opts.servers or {}) do
+		for server, settings in pairs(opts.settings or {}) do
 			vim.lsp.enable(server)
 			vim.lsp.config(server, {
 				settings = settings,
-				on_attach = on_attach,
+				on_attach = function(client, bufnr)
+					if client.supports_method("textDocument/formatting") then
+						vim.api.nvim_create_autocmd("BufWritePre", {
+							group = vim.api.nvim_create_augroup("LspFormatting", {}),
+							buffer = bufnr,
+							callback = function()
+								vim.lsp.buf.format()
+							end,
+						})
+					end
+
+					local function enableCodeActionKind(kind, supportedKinds)
+						if supportedKinds[kind] ~= nil then
+							vim.api.nvim_create_autocmd("BufWritePre", {
+								group = vim.api.nvim_create_augroup("LspCodeAction", {}),
+								buffer = bufnr,
+								callback = function()
+									vim.lsp.buf.code_action({
+										apply = true,
+										context = {
+											only = { kind },
+										},
+									})
+								end,
+							})
+						end
+					end
+
+					enableCodeActionKind("source.organizeImports", client.server_capabilities.codeActionProvider)
+				end,
 			})
 		end
 	end,

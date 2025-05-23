@@ -15,14 +15,6 @@ return {
 		{ '<leader>a', function() require('telescope.builtin').live_grep() end },
 		{ '<leader>l', function() require('telescope.builtin').current_buffer_fuzzy_find() end },
 		{
-			'<C-]>',
-			function()
-				require('telescope.builtin').lsp_definitions({
-					jump_type = 'never',
-				})
-			end,
-		},
-		{
 			'gri',
 			function()
 				require('telescope.builtin').lsp_implementations({
