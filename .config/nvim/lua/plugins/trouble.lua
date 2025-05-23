@@ -7,7 +7,7 @@ return {
 		open_no_results = true,
 	},
 	keys = {
-		{ "<leader>xx", function() require("trouble").toggle({ mode = "diagnostics", focus = true }) end, },
+		{ "<leader>xx", function() require("trouble").toggle({ mode = "diagnostics", focus = true }) end, desc = 'Toggle diagnotics' },
 		{
 			"<leader>xX",
 			function()
@@ -19,6 +19,7 @@ return {
 					trouble.open(opts)
 				end
 			end,
+			desc = 'Toggle diagnostics for current buffer',
 		},
 	},
 }

@@ -54,9 +54,9 @@ vim.opt.mouse = ''
 vim.opt.swapfile = false
 
 -- Mappings
-vim.keymap.set('n', '<leader>z', vim.cmd.quit, { silent = true, noremap = true })
-vim.keymap.set('n', '<leader>q', vim.cmd.quitall, { silent = true, noremap = true })
-vim.keymap.set('n', '<leader>s', vim.cmd.write, { silent = true, noremap = true })
+-- vim.keymap.set('n', '<leader>z', vim.cmd.quit, { silent = true, noremap = true })
+-- vim.keymap.set('n', '<leader>q', vim.cmd.quitall, { silent = true, noremap = true })
+-- vim.keymap.set('n', '<leader>s', vim.cmd.write, { silent = true, noremap = true })
 
 require('lazy').setup('plugins', {
 	defaults = { lazy = true, version = false },
@@ -95,17 +95,6 @@ vim.api.nvim_create_autocmd('FileType', {
 	pattern = { 'markdown' },
 	command = 'setlocal wrap',
 	group = augroup,
-})
-
-vim.api.nvim_create_autocmd({ "FileType" }, {
-  callback = function()
-    if require("nvim-treesitter.parsers").has_parser() then
-      vim.opt.foldmethod = "expr"
-      vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-    else
-      vim.opt.foldmethod = "syntax"
-    end
-  end,
 })
 
 vim.cmd.colorscheme('rose-pine')

@@ -1,8 +1,20 @@
 return {
 	"neovim/nvim-lspconfig",
 	event = { "BufReadPre", "BufNewFile" },
-	opts = {
-		settings = {
+	config = function()
+		vim.lsp.set_log_level("WARN")
+
+		vim.api.nvim_create_user_command('LspCapabilities', function()
+			local capabilities = {}
+			local clients = vim.lsp.get_clients()
+			for _, client in ipairs(clients) do
+				capabilities[client.name] = client.server_capabilities
+			end
+
+			print(vim.inspect(capabilities))
+		end, {})
+
+		for server, settings in pairs({
 			clangd = {},
 			gopls = {
 				gopls = {
@@ -13,20 +25,23 @@ return {
 			ruff = {},
 			pyright = {
 				python = {
-					pythonPath = ".venv/bin/python",
-				}
+					pythonPath = '.venv/bin/python',
+				},
 			},
 			astro = {},
 			rust_analyzer = {},
 			lua_ls = {},
-		},
-	},
-	config = function(_, opts)
-		for server, settings in pairs(opts.settings or {}) do
+			tailwindcss = {},
+			zls = {},
+		}) do
 			vim.lsp.enable(server)
 			vim.lsp.config(server, {
 				settings = settings,
 				on_attach = function(client, bufnr)
+					if client.supports_method('textDocument/foldingRange') then
+						vim.opt.foldexpr = 'v:lua.vim.lsp.foldexpr()'
+					end
+
 					if client.supports_method("textDocument/formatting") then
 						vim.api.nvim_create_autocmd("BufWritePre", {
 							group = vim.api.nvim_create_augroup("LspFormatting", {}),
@@ -37,7 +52,7 @@ return {
 						})
 					end
 
-					local function enableCodeActionKind(kind, supportedKinds)
+					local function buf_write_pre_code_action(kind, supportedKinds)
 						if supportedKinds[kind] ~= nil then
 							vim.api.nvim_create_autocmd("BufWritePre", {
 								group = vim.api.nvim_create_augroup("LspCodeAction", {}),
@@ -54,7 +69,10 @@ return {
 						end
 					end
 
-					enableCodeActionKind("source.organizeImports", client.server_capabilities.codeActionProvider)
+					local codeActionProvider = client.server_capabilities.codeActionProvider
+					if codeActionProvider then
+						buf_write_pre_code_action("source.organizeImports", codeActionProvider)
+					end
 				end,
 			})
 		end

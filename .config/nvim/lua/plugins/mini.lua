@@ -14,12 +14,4 @@ return {
 			},
 		},
 	},
-	{
-		'echasnovski/mini.bufremove',
-		event = 'VeryLazy',
-		keys = {
-			{ '<leader>w', function() require("mini.bufremove").delete() end },
-		},
-		opts = {},
-	},
 }
