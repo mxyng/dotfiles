@@ -54,9 +54,7 @@ vim.opt.mouse = ''
 vim.opt.swapfile = false
 
 -- Mappings
--- vim.keymap.set('n', '<leader>z', vim.cmd.quit, { silent = true, noremap = true })
--- vim.keymap.set('n', '<leader>q', vim.cmd.quitall, { silent = true, noremap = true })
--- vim.keymap.set('n', '<leader>s', vim.cmd.write, { silent = true, noremap = true })
+vim.keymap.set('n', '<C-W>t', vim.cmd.tabnew, { silent = true, noremap = true, desc = 'Create a new tab' })
 
 require('lazy').setup('plugins', {
 	defaults = { lazy = true, version = false },
