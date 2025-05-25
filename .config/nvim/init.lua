@@ -56,6 +56,17 @@ vim.opt.swapfile = false
 -- Mappings
 vim.keymap.set('n', '<C-W>t', vim.cmd.tabnew, { silent = true, noremap = true, desc = 'Create a new tab' })
 
+-- Shada
+local cwd = vim.fn.getcwd()
+while cwd ~= vim.fn.expand('~') and cwd ~= "/" do
+	if vim.fn.isdirectory(cwd .. '/.git') == 1 then
+		vim.opt.shadafile = cwd .. '/.shada/main.shada'
+		break
+	end
+
+	cwd = vim.fn.fnamemodify(cwd, ":h")
+end
+
 require('lazy').setup('plugins', {
 	defaults = { lazy = true, version = false },
 	change_detection = { enabled = false },
