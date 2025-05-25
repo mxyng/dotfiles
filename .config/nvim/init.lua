@@ -58,6 +58,7 @@ vim.keymap.set('n', '<C-W>t', vim.cmd.tabnew, { silent = true, noremap = true, d
 
 require('lazy').setup('plugins', {
 	defaults = { lazy = true, version = false },
+	change_detection = { enabled = false },
 	rocks = { enabled = false },
 })
 
