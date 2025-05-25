@@ -1,52 +1,28 @@
 return {
 	'nvim-telescope/telescope.nvim',
 	dependencies = { 'nvim-tree/nvim-web-devicons' },
-	keys = {
-		{ '<leader>t', function() require('telescope.builtin').builtin() end, desc = 'Builtins' },
-		{ '<leader>b', function() require('telescope.builtin').buffers() end, desc = 'Buffers' },
-		{
-			'<leader>p',
-			function()
-				require('telescope.builtin').find_files({
-					find_command = { "rg", "--files", "--hidden", "--smart-case" },
-				})
-			end,
-			desc = 'Find files',
-		},
-		{ '<leader>a', function() require('telescope.builtin').live_grep() end,                 desc = 'Live grep' },
-		{ '<leader>l', function() require('telescope.builtin').current_buffer_fuzzy_find() end, desc = 'Fuzzy find for current buffer' },
-		{
-			'gri',
-			function()
-				require('telescope.builtin').lsp_implementations({
-					include_current_line = true,
-					jump_type = 'never',
-				})
-			end,
-		},
-		{
-			'grr',
-			function()
-				require('telescope.builtin').lsp_references({
-					include_current_line = true,
-					jump_type = 'never',
-				})
-			end,
-		},
-		{
-			'gO',
-			function()
-				require('telescope.builtin').lsp_document_symbols()
-			end,
-		},
-	},
+	keys = function()
+		local telescope = require("telescope.builtin")
+		return {
+			{ '<leader>ft', function() telescope.builtin() end,                                                                       desc = 'Telescope builtins' },
+			{ '<leader>ff', function() telescope.find_files({ find_command = { "rg", "--files", "--hidden", "--smart-case" }, }) end, desc = 'Telescope find files', },
+			{ '<leader>fg', function() telescope.live_grep() end,                                                                     desc = 'Telescope live grep' },
+			{ '<leader>fb', function() telescope.buffers() end,                                                                       desc = 'Telescope buffers' },
+			{ '<leader>fl', function() telescope.current_buffer_fuzzy_find() end,                                                     desc = 'Telescope current buffer fuzzy find' },
+
+			{ 'gri',        function() telescope.lsp_implementations({ include_current_line = true, jump_type = 'never', }) end,      desc = 'vim.lsp.buf.implementation()' },
+			{ 'grr',        function() telescope.lsp_references({ include_current_line = true, jump_type = 'never', }) end,           desc = 'vim.lsp.buf.references()' },
+			{ 'gO',         function() telescope.lsp_document_symbols() end,                                                          desc = 'vim.lsp.buf.document_symbols()' },
+			{ 'gW',         function() telescope.lsp_dynamic_workspace_symbols() end,                                                 desc = 'vim.lsp.buf.workspace_symbols()' },
+		}
+	end,
 	opts = function()
-		local Actions = require('telescope.actions')
+		local actions = require('telescope.actions')
 		return {
 			defaults = {
 				mappings = {
 					i = {
-						['<esc>'] = Actions.close
+						['<esc>'] = actions.close
 					},
 				},
 			},

@@ -6,7 +6,7 @@ font-feature = -calt
 font-feature = -dlig
 font-feature = -liga
 
-macos-option-as-alt = true
+macos-option-as-alt = left
 quit-after-last-window-closed = true
 
 mouse-hide-while-typing = true

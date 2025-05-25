@@ -58,9 +58,7 @@ vim.keymap.set('n', '<C-W>t', vim.cmd.tabnew, { silent = true, noremap = true, d
 
 require('lazy').setup('plugins', {
 	defaults = { lazy = true, version = false },
-	git = { url_format = 'git@github.com:%s.git' },
-	checker = { enabled = false, frequency = 86400 },
-	change_detection = { enabled = false, notify = false },
+	rocks = { enabled = false },
 })
 
 local augroup = vim.api.nvim_create_augroup('User', { clear = true })
