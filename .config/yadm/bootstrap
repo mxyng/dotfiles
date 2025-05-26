@@ -6,6 +6,9 @@ status() { echo ">>> $@"; }
 ( cd $HOME;
     yadm submodule update --recursive --init )
 
+yadm gitconfig core.sparsecheckout true
+yadm sparse-checkout reapply
+
 if ! command -v brew >/dev/null; then
     status "Installing Homebrew..."
     curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | sh
