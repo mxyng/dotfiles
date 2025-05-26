@@ -14,3 +14,6 @@ mouse-hide-while-typing = true
 unfocused-split-opacity = 0.3
 window-inherit-working-directory = false
 window-save-state = never
+
+keybind = super+t=ignore
+keybind = super+n=ignore
