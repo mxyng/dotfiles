@@ -5,8 +5,8 @@ return {
 	config = function()
 		require('nvim-treesitter.configs').setup({
 			sync_install = false,
-			highlight = { enable = true, },
-			indent = { enable = true, },
+			highlight = { enable = true },
+			indent = { enable = true },
 			ensure_installed = {
 				'vim',
 				'bash',
