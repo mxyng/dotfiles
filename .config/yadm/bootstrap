@@ -26,6 +26,13 @@ if command -v nvim >/dev/null; then
     nvim '+Lazy update' '+quitall'
 fi
 
+if command -v uv >/dev/null; then
+    status "Installing uv tools..."
+    while read -r TOOL; do
+        uv tool install "$TOOL"
+    done <"$HOME/.config/uv/tools"
+fi
+
 if command -v bat >/dev/null; then
     status "Install bat themes..."
     BAT_THEMES="
