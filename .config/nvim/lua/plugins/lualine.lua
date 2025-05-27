@@ -7,14 +7,11 @@ return {
 	opts = {
 		options = { theme = 'auto' },
 		sections = {
-			lualine_c = {
-				{ 'filename', path = 1 },
-			},
+			lualine_a = { { 'mode', fmt = function(str) return str:sub(1, 1) end } },
+			lualine_c = { { 'filename', path = 4 } },
 		},
 		inactive_sections = {
-			lualine_c = {
-				{ 'filename', path = 1 },
-			},
+			lualine_c = { { 'filename', path = 1 } },
 		},
 	},
 }
