@@ -1,7 +1,9 @@
 return {
 	'nvim-lualine/lualine.nvim',
 	event = 'ColorScheme',
-	dependencies = { 'nvim-tree/nvim-web-devicons' },
+	dependencies = {
+		'nvim-tree/nvim-web-devicons',
+	},
 	opts = {
 		options = { theme = 'auto' },
 		sections = {

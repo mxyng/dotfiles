@@ -1,10 +1,7 @@
 return {
 	'folke/trouble.nvim',
-	dependencies = { 'nvim-tree/nvim-web-devicons' },
-	cmd = "Trouble",
-	opts = {
-		warn_no_results = false,
-		open_no_results = true,
+	dependencies = {
+		'nvim-tree/nvim-web-devicons',
 	},
 	keys = function()
 		local trouble = require("trouble")
@@ -14,5 +11,9 @@ return {
 			{ "<leader>xL", function() trouble.toggle({ mode = "loclist" }) end,                                         desc = "Location List (Trouble)" },
 			{ "<leader>xQ", function() trouble.toggle({ mode = "qflist" }) end,                                          desc = "Quickfix List (Trouble)" },
 		}
-	end
+	end,
+	opts = {
+		warn_no_results = false,
+		open_no_results = true,
+	},
 }

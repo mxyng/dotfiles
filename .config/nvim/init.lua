@@ -54,7 +54,7 @@ vim.opt.mouse = ''
 vim.opt.swapfile = false
 
 -- Mappings
-vim.keymap.set('n', '<C-W>t', vim.cmd.tabnew, { silent = true, noremap = true, desc = 'Create a new tab' })
+vim.keymap.set('n', '<c-w>t', vim.cmd.tabnew, { silent = true, noremap = true, desc = 'Create a new tab' })
 
 -- Shada
 local cwd = vim.fn.getcwd()

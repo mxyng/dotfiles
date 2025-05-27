@@ -1,6 +1,8 @@
 return {
 	'nvim-telescope/telescope.nvim',
-	dependencies = { 'nvim-tree/nvim-web-devicons' },
+	dependencies = {
+		'nvim-lua/plenary.nvim',
+	},
 	keys = function()
 		local telescope = require("telescope.builtin")
 		return {
