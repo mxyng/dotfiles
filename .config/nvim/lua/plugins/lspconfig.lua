@@ -53,7 +53,7 @@ return {
 					end
 
 					local function buf_write_pre_code_action(kind, supportedKinds)
-						if supportedKinds[kind] ~= nil then
+						if supportedKinds:any(function(k) return k == kind end) then
 							vim.api.nvim_create_autocmd("BufWritePre", {
 								group = vim.api.nvim_create_augroup("LspCodeAction", {}),
 								buffer = bufnr,
@@ -71,7 +71,7 @@ return {
 
 					local codeActionProvider = client.server_capabilities.codeActionProvider
 					if codeActionProvider then
-						buf_write_pre_code_action("source.organizeImports", codeActionProvider)
+						buf_write_pre_code_action("source.organizeImports", vim.iter(codeActionProvider.codeActionKinds))
 					end
 				end,
 			})
