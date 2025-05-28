@@ -1,5 +1,6 @@
-local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
+vim.g.mapleader = ' '
 
+local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
 	vim.fn.system({
 		'git',
@@ -13,48 +14,35 @@ end
 
 vim.opt.rtp:prepend(lazypath)
 
--- Remap leader
-vim.g.mapleader = ' '
-
--- Line numbers
 vim.opt.number = true
 vim.opt.relativenumber = true
+
 vim.opt.linebreak = true
+
 vim.opt.cursorline = true
 
--- List mode
 vim.opt.list = true
 vim.opt.listchars:append('space:⋅')
 vim.opt.listchars:append('eol:↴')
 
--- Split window
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 
--- Tab
 vim.opt.expandtab = true
 vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 
--- Wrap
 vim.opt.wrap = false
 
--- Search case
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
--- Clipboard
 vim.opt.clipboard = 'unnamed'
 
--- Mouse
 vim.opt.mouse = ''
 
--- Swap
 vim.opt.swapfile = false
-
--- Mappings
-vim.keymap.set('n', '<c-w>t', vim.cmd.tabnew, { silent = true, noremap = true, desc = 'Create a new tab' })
 
 -- Shada
 local cwd = vim.fn.getcwd()
@@ -66,6 +54,8 @@ while cwd ~= vim.fn.expand('~') and cwd ~= "/" do
 
 	cwd = vim.fn.fnamemodify(cwd, ":h")
 end
+
+vim.keymap.set('n', '<c-w>t', vim.cmd.tabnew, { silent = true, noremap = true, desc = 'Create a new tab' })
 
 require('lazy').setup('plugins', {
 	defaults = { lazy = true, version = false },
