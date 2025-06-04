@@ -12,6 +12,7 @@ return {
 			{ '<leader>fb', function() telescope.buffers() end,                                                                      desc = 'Telescope buffers' },
 			{ '<leader>fl', function() telescope.current_buffer_fuzzy_find() end,                                                    desc = 'Telescope current buffer fuzzy find' },
 
+			{ '<c-]>',      function() telescope.lsp_definitions({ jump_type = 'never' }) end,                                       desc = 'vim.lsp.buf.definition()' },
 			{ 'gri',        function() telescope.lsp_implementations({ include_current_line = true, jump_type = 'never' }) end,      desc = 'vim.lsp.buf.implementation()' },
 			{ 'grr',        function() telescope.lsp_references({ include_current_line = true, jump_type = 'never' }) end,           desc = 'vim.lsp.buf.references()' },
 			{ 'gO',         function() telescope.lsp_document_symbols() end,                                                         desc = 'vim.lsp.buf.document_symbols()' },
