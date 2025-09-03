@@ -1,14 +1,6 @@
 return {
 	'folke/flash.nvim',
 	event = 'VeryLazy',
-	opts = {
-		modes = {
-			search = {
-				enabled = true,
-				highlight = { backdrop = true },
-			},
-		},
-	},
 	keys = function()
 		local flash = require("flash")
 		return {

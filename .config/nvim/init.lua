@@ -44,6 +44,10 @@ vim.opt.mouse = ''
 
 vim.opt.swapfile = false
 
+vim.opt.foldlevelstart = 99
+vim.opt.foldcolumn = 'auto'
+vim.opt.foldtext = ''
+
 -- Shada
 local cwd = vim.fn.getcwd()
 while cwd ~= vim.fn.expand('~') and cwd ~= "/" do
@@ -56,6 +60,7 @@ while cwd ~= vim.fn.expand('~') and cwd ~= "/" do
 end
 
 vim.keymap.set('n', '<c-w>t', vim.cmd.tabnew, { silent = true, noremap = true, desc = 'Create a new tab' })
+vim.keymap.set('t', '<esc>', '<c-\\><c-n>', { silent = true, noremap = true, desc = 'Exit terminal mode' })
 
 require('lazy').setup('plugins', {
 	defaults = { lazy = true, version = false },
