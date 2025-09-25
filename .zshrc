@@ -82,6 +82,7 @@ fi
 
 export GIT_LFS_SKIP_SMUDGE=1
 export GIT_PS1_SHOWUPSTREAM=verbose
+export HF_HUB_DISABLE_TELEMETRY=1
 
 precmd () {
     PS1='%F{red}%2~%f'
