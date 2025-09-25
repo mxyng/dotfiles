@@ -49,6 +49,7 @@ return {
 			rust_analyzer = {},
 			lua_ls = {},
 			tailwindcss = {},
+			tsgo = {},
 			zls = {},
 		}) do
 			vim.lsp.enable(server)
