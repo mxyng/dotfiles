@@ -55,7 +55,6 @@
 [rebase]
     autosquash = true
     autostash = true
-    updaterefs = true
 
 [column]
     ui = auto

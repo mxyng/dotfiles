@@ -6,6 +6,7 @@
 .envrc
 .aliases/
 .ccache/
+.cache/
 
 node_modules/
 
@@ -16,3 +17,4 @@ pyrightconfig.json
 *.patched
 
 Makefile.me
+*.bin
