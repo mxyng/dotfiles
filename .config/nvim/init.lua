@@ -100,4 +100,10 @@ vim.api.nvim_create_autocmd('FileType', {
 	group = augroup,
 })
 
+vim.api.nvim_create_autocmd('FileType', {
+	pattern = { 'yaml' },
+	command = 'setlocal nolist',
+	group = augroup,
+})
+
 vim.cmd.colorscheme('rose-pine')

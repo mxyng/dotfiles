@@ -18,10 +18,11 @@
     lg = log --oneline -p
     ll = log --oneline --numstat
     lsd = log --oneline --graph
-    rbi = rebase -i
     fu = commit --fixup
     ap = add -p
     touch = commit --amend --no-edit
+    rb = rebase
+    rbi = rebase -i
 
 [color]
     ui = true
@@ -42,6 +43,7 @@
 
 [init]
     defaultbranch = main
+    defaultrefformat = files
 
 [url "git@github.com:"]
     insteadof = https://github.com/

@@ -80,6 +80,10 @@ if type go &>/dev/null; then
     path+=($GOBIN)
 fi
 
+if type gcloud &>/dev/null; then
+    path+=$(dirname $(readlink $(which gcloud)))
+fi
+
 export GIT_LFS_SKIP_SMUDGE=1
 export GIT_PS1_SHOWUPSTREAM=verbose
 export HF_HUB_DISABLE_TELEMETRY=1
