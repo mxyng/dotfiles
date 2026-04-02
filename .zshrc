@@ -28,8 +28,6 @@ fi
 
 if type brew &>/dev/null && [ -d "$(brew --prefix)/share/zsh-autosuggestions" ]; then
     source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-    bindkey '^Y' autosuggest-accept
-
     export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 fi
 
