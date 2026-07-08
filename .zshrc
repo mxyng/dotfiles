@@ -13,25 +13,30 @@ alias ll='ls -al'
 alias ls='ls -G'
 alias grep='grep --color=auto'
 
+typeset -U fpath
+
 if [ -x '/opt/homebrew/bin/brew' ]; then
     eval $(/opt/homebrew/bin/brew shellenv)
-    fpath+=($(brew --prefix)/share/zsh/site-functions)
+    fpath+=($BREW_PREFIX/share/zsh/site-functions)
+
+    BREW_PREFIX=$(brew --prefix)
+    if [ -d "$BREW_PREFIX/share/zsh-completions" ]; then
+        fpath+=$BREW_PREFIX/share/zsh-completions
+    fi
+
+    if [ -d "$BREW_PREFIX/share/zsh-syntax-highlighting" ]; then
+        source $BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+    fi
+
+    if [ -d "$BREW_PREFIX/share/zsh-autosuggestions" ]; then
+        source $BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+        export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+    fi
 fi
 
-if type brew &>/dev/null && [ -d "$(brew --prefix)/share/zsh-completions" ]; then
-    fpath+=$(brew --prefix)/share/zsh-completions
-fi
-
-if type brew &>/dev/null && [ -d "$(brew --prefix)/share/zsh-syntax-highlighting" ]; then
-    source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-fi
-
-if type brew &>/dev/null && [ -d "$(brew --prefix)/share/zsh-autosuggestions" ]; then
-    source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-    export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-fi
 
 if type nvim &>/dev/null; then
+    export EDITOR='nvim'
     alias vi='nvim'
     alias vimdiff='nvim -d'
 fi
@@ -92,8 +97,8 @@ precmd () {
         PS1="$PS1 %F{green}($VIRTUAL_ENV_PROMPT)%f"
     fi
 
-    if type brew &>/dev/null && [ -f "$(brew --prefix)/etc/bash_completion.d/git-prompt.sh" ]; then
-        . $(brew --prefix)/etc/bash_completion.d/git-prompt.sh
+    if type brew &>/dev/null && [ -f "$BREW_PREFIX/etc/bash_completion.d/git-prompt.sh" ]; then
+        . $BREW_PREFIX/etc/bash_completion.d/git-prompt.sh
         __git_ps1 "$PS1%F{yellow}" '%f %F{blue}%(!.#.$)%f ' ' : %s'
     fi
 }

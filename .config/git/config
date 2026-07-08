@@ -23,6 +23,7 @@
     touch = commit --amend --no-edit
     rb = rebase
     rbi = rebase -i
+    root = rev-parse --show-toplevel
 
 [color]
     ui = true

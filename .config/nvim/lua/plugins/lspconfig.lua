@@ -32,27 +32,14 @@ return {
 		end
 
 		for server, settings in pairs({
-			copilot = {
-				telemetry = {
-					telemetryLevel = "off",
-				},
-			},
-			clangd = {},
-			gopls = {
-				gopls = {
-					staticcheck = true,
-					gofumpt = true,
-				},
-			},
-			ruff = {},
-			pyright = {
-				python = {
-					pythonPath = '.venv/bin/python',
-				},
-			},
 			astro = {},
-			rust_analyzer = {},
+			clangd = {},
+			copilot = { telemetry = { telemetryLevel = "off", }, },
+			gopls = { gopls = { staticcheck = true, gofumpt = true, }, },
 			lua_ls = {},
+			pyright = { python = { pythonPath = '.venv/bin/python', }, },
+			ruff = {},
+			rust_analyzer = {},
 			tailwindcss = {},
 			tsgo = {},
 			zls = {},
@@ -96,7 +83,7 @@ return {
 						end
 
 						local codeActionProvider = client.server_capabilities.codeActionProvider
-						if codeActionProvider then
+						if codeActionProvider and type(codeActionProvider) == 'table' then
 							buf_write_pre_code_action("source.organizeImports", vim.iter(codeActionProvider.codeActionKinds))
 						end
 					end

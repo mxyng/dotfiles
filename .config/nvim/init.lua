@@ -77,7 +77,7 @@ vim.api.nvim_create_autocmd('FileType', {
 })
 
 vim.api.nvim_create_autocmd('FileType', {
-	pattern = { 'typescript', 'javascript', 'json', 'jsonnet' },
+	pattern = { 'typescript', 'javascript', 'json', 'jsonnet', 'astro' },
 	command = 'setlocal tabstop=2 shiftwidth=2',
 	group = augroup,
 })
@@ -104,6 +104,11 @@ vim.api.nvim_create_autocmd('FileType', {
 	pattern = { 'yaml' },
 	command = 'setlocal nolist',
 	group = augroup,
+})
+
+vim.api.nvim_create_autocmd('FileType', {
+	pattern = { 'sql' },
+	command = 'setlocal noexpandtab'
 })
 
 vim.cmd.colorscheme('rose-pine')
